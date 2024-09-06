@@ -74,6 +74,9 @@ class ABCPolyBase(Generic[_NameCo], metaclass=abc.ABCMeta):
     @property
     def symbol(self, /) -> LiteralString: ...
 
+    @property
+    def coef_natural(self, /) -> _CoefSeries: ...
+
     def __init__(
         self,
         /,
