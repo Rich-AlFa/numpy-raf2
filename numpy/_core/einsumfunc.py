@@ -219,9 +219,9 @@ def _optimal_path(input_sets, output_set, idx_dict, memory_limit):
     return path
 
 def _parse_possible_contraction(
-        positions, input_sets, output_set, idx_dict,
-        memory_limit, path_cost, naive_cost
-    ):
+    positions, input_sets, output_set, idx_dict,
+    memory_limit, path_cost, naive_cost
+):
     """Compute the cost (removed size + flops) and resultant indices for
     performing the contraction specified by ``positions``.
 

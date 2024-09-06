@@ -56,7 +56,8 @@ def test_get_type_hints(name: type, tup: TypeTup) -> None:
 
     # Explicitly set `__annotations__` in order to circumvent the
     # stringification performed by `from __future__ import annotations`
-    def func(a): pass
+    def func(a):
+        pass
     func.__annotations__ = {"a": typ, "return": None}
 
     out = get_type_hints(func)
@@ -71,7 +72,8 @@ def test_get_type_hints_str(name: type, tup: TypeTup) -> None:
 
     # Explicitly set `__annotations__` in order to circumvent the
     # stringification performed by `from __future__ import annotations`
-    def func(a): pass
+    def func(a):
+        pass
     func.__annotations__ = {"a": typ_str, "return": None}
 
     out = get_type_hints(func)

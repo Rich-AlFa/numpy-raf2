@@ -39,7 +39,8 @@ NDArray: TypeAlias = ndarray[_Shape, dtype[_ScalarType_co]]
 # any and all remaining overloads
 @runtime_checkable
 class _SupportsArray(Protocol[_DType_co]):
-    def __array__(self) -> ndarray[Any, _DType_co]: ...
+    def __array__(self) -> ndarray[Any, _DType_co]:
+        ...
 
 
 @runtime_checkable
@@ -51,7 +52,8 @@ class _SupportsArrayFunc(Protocol):
         types: Collection[type[Any]],
         args: tuple[Any, ...],
         kwargs: dict[str, Any],
-    ) -> object: ...
+    ) -> object:
+        ...
 
 
 # TODO: Wait until mypy supports recursive objects in combination with typevars

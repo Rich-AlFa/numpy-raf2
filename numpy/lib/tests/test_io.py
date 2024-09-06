@@ -70,7 +70,7 @@ def strptime(s, fmt=None):
     2.5.
 
     """
-    if type(s) == bytes:
+    if type(s) is bytes:
         s = s.decode("latin1")
     return datetime(*time.strptime(s, fmt)[:3])
 
@@ -233,7 +233,6 @@ class TestSavezLoad(RoundtripTest):
         l = np.load(c)
         assert_equal(a, l['file_a'])
         assert_equal(b, l['file_b'])
-
 
     def test_tuple_getitem_raises(self):
         # gh-23748
@@ -535,7 +534,6 @@ class TestSaveTxt:
             lines,
             [b' (3.142e+00-2.718e+00j)  (3.142e+00-2.718e+00j)\n',
              b' (3.142e+00-2.718e+00j)  (3.142e+00-2.718e+00j)\n'])
-
 
     def test_custom_writer(self):
 
@@ -994,7 +992,10 @@ class TestLoadTxt(LoadTxtBase):
         data = """ 1; 2001-01-01
                    2; 2002-01-31 """
         ndtype = [('idx', int), ('code', object)]
-        func = lambda s: strptime(s.strip(), "%Y-%m-%d")
+
+        def func(s):
+            return strptime(s.strip(), "%Y-%m-%d")
+
         converters = {1: func}
         test = np.loadtxt(TextIO(data), delimiter=";", dtype=ndtype,
                           converters=converters)
@@ -1237,7 +1238,7 @@ class TestLoadTxt(LoadTxtBase):
         assert_array_equal(x, a)
 
     def test_max_rows_larger(self):
-        #test max_rows > num rows
+        # test max_rows > num rows
         c = TextIO()
         c.write('comment\n1,2,3,5\n4,5,7,8\n2,1,4,5')
         c.seek(0)
@@ -1337,7 +1338,7 @@ class Testfromregex:
             np.fromregex(c, regexp, dtype=np.float64)
 
 
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 
 class TestFromTxt(LoadTxtBase):
@@ -1624,10 +1625,19 @@ M   33  21.99
         assert_equal(test, [33, 66])
 
     def test_invalid_converter(self):
-        strip_rand = lambda x: float((b'r' in x.lower() and x.split()[-1]) or
-                                     (b'r' not in x.lower() and x.strip() or 0.0))
-        strip_per = lambda x: float((b'%' in x.lower() and x.split()[0]) or
-                                    (b'%' not in x.lower() and x.strip() or 0.0))
+
+        def strip_rand(x):
+            return float(
+                b"r" in x.lower() and
+                x.split()[-1] or (b"r" not in x.lower() and x.strip() or 0.0)
+            )
+
+        def strip_per(x):
+            return float(
+                b"%" in x.lower() and
+                x.split()[0] or (b"%" not in x.lower() and x.strip() or 0.0)
+            )
+
         s = TextIO("D01N01,10/1/2003 ,1 %,R 75,400,600\r\n"
                    "L24U05,12/5/2003, 2 %,1,300, 150.5\r\n"
                    "D02N03,10/10/2004,R 1,,7,145.55")
@@ -1639,7 +1649,10 @@ M   33  21.99
     def test_tricky_converter_bug1666(self):
         # Test some corner cases
         s = TextIO('q1,2\nq3,4')
-        cnv = lambda s: float(s[1:])
+
+        def cnv(s):
+            return float(s[1:])
+
         test = np.genfromtxt(s, delimiter=',', converters={0: cnv})
         control = np.array([[1., 2.], [3., 4.]])
         assert_equal(test, control)
@@ -1678,7 +1691,10 @@ M   33  21.99
         data = """ 1; 2001-01-01
                    2; 2002-01-31 """
         ndtype = [('idx', int), ('code', object)]
-        func = lambda s: strptime(s.strip(), "%Y-%m-%d")
+
+        def func(s):
+            return strptime(s.strip(), "%Y-%m-%d")
+
         converters = {1: func}
         test = np.genfromtxt(TextIO(data), delimiter=";", dtype=ndtype,
                              converters=converters)
@@ -2359,7 +2375,7 @@ M   33  21.99
         assert_(isinstance(test, np.recarray))
         assert_equal(test, control)
 
-        #gh-10394
+        # gh-10394
         data = TextIO('color\n"red"\n"blue"')
         test = recfromcsv(data, converters={0: lambda x: x.strip('\"')})
         control = np.array([('red',), ('blue',)], dtype=[('color', (str, 4))])
@@ -2476,9 +2492,9 @@ M   33  21.99
 
         assert_equal(test.dtype.names, ['f0', 'f1', 'f2'])
 
-        assert_(test.dtype['f0'] == float)
-        assert_(test.dtype['f1'] == np.int64)
-        assert_(test.dtype['f2'] == np.int_)
+        assert_(test.dtype['f0'] == float)  # noqa: E721
+        assert_(test.dtype['f1'] == np.int64)  # noqa: E721
+        assert_(test.dtype['f2'] == np.int_)  # noqa: E721
 
         assert_allclose(test['f0'], 73786976294838206464.)
         assert_equal(test['f1'], 17179869184)
@@ -2706,7 +2722,6 @@ def test_ducktyping():
 
     f = JustReader(s)
     assert_array_equal(np.load(f), a)
-
 
 
 def test_gzip_loadtxt():

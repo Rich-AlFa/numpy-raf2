@@ -100,7 +100,6 @@ class TestHistogram:
         with assert_raises_regex(ValueError, "same shape as"):
             h, b = histogram(a, range=[1, 9], weights=w, density=True)
 
-
     def test_type(self):
         # Check the type of the returned histogram
         a = np.arange(10) + .5
@@ -211,7 +210,7 @@ class TestHistogram:
         assert_array_equal(a, np.array([0]))
         assert_array_equal(b, np.array([0, 1]))
 
-    def test_error_binnum_type (self):
+    def test_error_binnum_type(self):
         # Tests if right Error is raised if bins argument is float
         vals = np.linspace(0.0, 1.0, num=100)
         histogram(vals, 5)

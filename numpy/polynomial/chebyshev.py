@@ -2076,7 +2076,10 @@ class Chebyshev(ABCPolyBase):
         """
         if domain is None:
             domain = cls.domain
-        xfunc = lambda x: func(pu.mapdomain(x, cls.window, domain), *args)
+
+        def xfunc(x):
+            return func(pu.mapdomain(x, cls.window, domain), *args)
+
         coef = chebinterpolate(xfunc, deg)
         return cls(coef, domain=domain)
 

@@ -28,8 +28,8 @@ class SuperTensorTestCase(unittest.TestCase):
         print(self.typeStr, "... ", file=sys.stderr)
         norm = SuperTensor.__dict__[self.typeStr + "Norm"]
         supertensor = np.arange(2*2*2*2, dtype=self.typeCode).reshape((2, 2, 2, 2))
-        #Note: cludge to get an answer of the same type as supertensor.
-        #Answer is simply sqrt(sum(supertensor*supertensor)/16)
+        # Note: cludge to get an answer of the same type as supertensor.
+        # Answer is simply sqrt(sum(supertensor*supertensor)/16)
         answer = np.array([np.sqrt(np.sum(supertensor.astype('d')*supertensor)/16.)], dtype=self.typeCode)[0]
         self.assertAlmostEqual(norm(supertensor), answer, 6)
 
@@ -259,7 +259,7 @@ class scharTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "schar"
         self.typeCode = "b"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -268,7 +268,7 @@ class ucharTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "uchar"
         self.typeCode = "B"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -277,7 +277,7 @@ class shortTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "short"
         self.typeCode = "h"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -286,7 +286,7 @@ class ushortTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "ushort"
         self.typeCode = "H"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -295,7 +295,7 @@ class intTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "int"
         self.typeCode = "i"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -304,7 +304,7 @@ class uintTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "uint"
         self.typeCode = "I"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -313,7 +313,7 @@ class longTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "long"
         self.typeCode = "l"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -322,7 +322,7 @@ class ulongTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "ulong"
         self.typeCode = "L"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -331,7 +331,7 @@ class longLongTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "longLong"
         self.typeCode = "q"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -340,7 +340,7 @@ class ulongLongTestCase(SuperTensorTestCase):
         SuperTensorTestCase.__init__(self, methodName)
         self.typeStr  = "ulongLong"
         self.typeCode = "Q"
-        #self.result   = int(self.result)
+        # self.result   = int(self.result)
 
 ######################################################################
 
@@ -359,6 +359,7 @@ class doubleTestCase(SuperTensorTestCase):
         self.typeCode = "d"
 
 ######################################################################
+
 
 if __name__ == "__main__":
 

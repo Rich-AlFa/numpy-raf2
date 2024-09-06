@@ -309,7 +309,6 @@ class TestRecFunctions:
         res = structured_to_unstructured(arr, dtype=int)
         assert_equal(res, np.zeros((10, 6), dtype=int))
 
-
         # test nested combinations of subarrays and structured arrays, gh-13333
         def subarray(dt, shape):
             return np.dtype((dt, shape))
@@ -546,10 +545,10 @@ class TestMergeArrays:
         z = self.data[-1]
 
         # Fixme, this test looks incomplete and broken
-        #test = merge_arrays((z, np.array([10, 20, 30]).view([('C', int)])))
-        #control = np.array([('A', 1., 10), ('B', 2., 20), ('-1', -1, 20)],
+        # test = merge_arrays((z, np.array([10, 20, 30]).view([('C', int)])))
+        # control = np.array([('A', 1., 10), ('B', 2., 20), ('-1', -1, 20)],
         #                   dtype=[('A', '|S3'), ('B', float), ('C', int)])
-        #assert_equal(test, control)
+        # assert_equal(test, control)
 
         # Hack to avoid pyflakes warnings about unused variables
         merge_arrays((z, np.array([10, 20, 30]).view([('C', int)])))
@@ -816,13 +815,13 @@ class TestJoinBy:
         a, b = self.a, self.b
 
         # Fixme, this test is broken
-        #test = join_by(('a', 'b'), a, b)
-        #control = np.array([(5, 55, 105, 100), (6, 56, 106, 101),
+        # test = join_by(('a', 'b'), a, b)
+        # control = np.array([(5, 55, 105, 100), (6, 56, 106, 101),
         #                    (7, 57, 107, 102), (8, 58, 108, 103),
         #                    (9, 59, 109, 104)],
         #                   dtype=[('a', int), ('b', int),
         #                          ('c', int), ('d', int)])
-        #assert_equal(test, control)
+        # assert_equal(test, control)
 
         # Hack to avoid pyflakes unused variable warnings
         join_by(('a', 'b'), a, b)

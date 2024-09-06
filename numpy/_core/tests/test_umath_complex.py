@@ -16,7 +16,7 @@ from numpy.testing import (
 # At least on Windows the results of many complex functions are not conforming
 # to the C99 standard. See ticket 1574.
 # Ditto for Solaris (ticket 1642) and OS X on PowerPC.
-#FIXME: this will probably change when we require full C99 compatibility
+# FIXME: this will probably change when we require full C99 compatibility
 with np.errstate(all='ignore'):
     functions_seem_flaky = ((np.exp(complex(np.inf, 0)).imag != 0)
                             or (np.log(complex(ncu.NZERO, 0)).imag != np.pi))
@@ -26,7 +26,6 @@ xfail_complex_tests = (not sys.platform.startswith('linux') or functions_seem_fl
 # TODO This can be xfail when the generator functions are got rid of.
 platform_skip = pytest.mark.skipif(xfail_complex_tests,
                                    reason="Inadequate C99 complex support")
-
 
 
 class TestCexp:
@@ -187,7 +186,7 @@ class TestClog:
         with np.errstate(invalid='raise'):
             x = np.array([complex(1., np.nan)], dtype=complex)
             y = complex(np.nan, np.nan)
-            #assert_raises(FloatingPointError, np.log, x)
+            # assert_raises(FloatingPointError, np.log, x)
         with np.errstate(invalid='ignore'):
             assert_almost_equal(np.log(x), y)
 
@@ -196,7 +195,7 @@ class TestClog:
 
         with np.errstate(invalid='raise'):
             x = np.array([np.inf + 1j * np.nan], dtype=complex)
-            #assert_raises(FloatingPointError, np.log, x)
+            # assert_raises(FloatingPointError, np.log, x)
         with np.errstate(invalid='ignore'):
             assert_almost_equal(np.log(x), y)
 
@@ -295,7 +294,7 @@ class TestCsqrt:
 
         check_complex_value(f, 1, 1, ref.real, ref.imag, False)
 
-    #def test_branch_cut(self):
+    # def test_branch_cut(self):
     #    _check_branch_cut(f, -1, 0, 1, -1)
 
     @platform_skip
@@ -334,7 +333,7 @@ class TestCsqrt:
         def _check_ninf_nan(dummy):
             msgform = "csqrt(-inf, nan) is (%f, %f), expected (nan, +-inf)"
             z = np.sqrt(np.array(complex(-np.inf, np.nan)))
-            #Fixme: ugly workaround for isinf bug.
+            # Fixme: ugly workaround for isinf bug.
             with np.errstate(invalid='ignore'):
                 if not (np.isnan(z.real) and np.isinf(z.imag)):
                     raise AssertionError(msgform % (z.real, z.imag))
@@ -504,7 +503,7 @@ class TestCarg:
         check_real_value(ncu._arg, ncu.PZERO, -1, 0.5 * np.pi, False)
         check_real_value(ncu._arg, ncu.NZERO, -1, -0.5 * np.pi, False)
 
-    #def test_branch_cuts(self):
+    # def test_branch_cuts(self):
     #    _check_branch_cut(ncu._arg, -1, 1j, -1, 1)
 
     def test_special_values(self):
@@ -595,7 +594,6 @@ class TestComplexAbsoluteMixedDTypes:
     @pytest.mark.parametrize("stride", [-4,-3,-2,-1,1,2,3,4])
     @pytest.mark.parametrize("astype", [np.complex64, np.complex128])
     @pytest.mark.parametrize("func", ['abs', 'square', 'conjugate'])
-
     def test_array(self, stride, astype, func):
         dtype = [('template_id', '<i8'), ('bank_chisq','<f4'),
                  ('bank_chisq_dof','<i8'), ('chisq', '<f4'), ('chisq_dof','<i8'),

@@ -1135,7 +1135,6 @@ class TestTypes:
         assert_equal(promote_func(np.array([i8]), f64), np.dtype(np.float64))
         assert_equal(promote_func(np.array([u16]), f64), np.dtype(np.float64))
 
-
     def test_coercion(self):
         def res_type(a, b):
             return np.add(a, b).dtype
@@ -1244,7 +1243,8 @@ class TestTypes:
     @pytest.mark.parametrize("string_dtype", ["U", "S"])
     def test_promote_types_strings(self, swap, string_dtype):
         if swap == "swap":
-            promote_types = lambda a, b: np.promote_types(b, a)
+            def promote_types(a, b):
+                return np.promote_types(b, a)
         else:
             promote_types = np.promote_types
 
@@ -3257,7 +3257,10 @@ class TestCreationFuncs:
         dtypes = {np.dtype(tp) for tp in itertools.chain(*sctypes.values())}
         # void, bytes, str
         variable_sized = {tp for tp in dtypes if tp.str.endswith('0')}
-        keyfunc = lambda dtype: dtype.str
+
+        def keyfunc(dtype):
+            return dtype.str
+
         self.dtypes = sorted(dtypes - variable_sized |
                              {np.dtype(tp.str.replace("0", str(i)))
                               for tp in variable_sized for i in range(1, 10)},
@@ -3501,7 +3504,7 @@ class TestLikeFuncs:
         b = a[:, ::2]  # Ensure b is not contiguous.
         kwargs = {'fill_value': ''} if likefunc == np.full_like else {}
         result = likefunc(b, dtype=dtype, **kwargs)
-        if dtype == str:
+        if dtype is str:
             assert result.strides == (16, 4)
         else:
             # dtype is bytes
@@ -4109,7 +4112,7 @@ class TestBroadcast:
                 assert_equal(mit.numiter, j)
 
     def test_broadcast_error_kwargs(self):
-        #gh-13455
+        # gh-13455
         arrs = [np.empty((5, 6, 7))]
         mit  = np.broadcast(*arrs)
         mit2 = np.broadcast(*arrs, **{})

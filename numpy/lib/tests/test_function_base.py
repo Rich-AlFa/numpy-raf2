@@ -1870,7 +1870,7 @@ class TestVectorize:
         assert_equal(r, m * v)
 
     def test_name(self):
-        #See gh-23021
+        # See gh-23021
         @np.vectorize
         def f2(a, b):
             return a + b
@@ -3757,7 +3757,7 @@ class TestQuantile:
         assert_equal(np.quantile(x, Fraction(1, 2)), Fraction(7, 2))
 
     def test_complex(self):
-        #See gh-22652
+        # See gh-22652
         arr_c = np.array([0.5+3.0j, 2.1+0.5j, 1.6+2.3j], dtype='G')
         assert_raises(TypeError, np.quantile, arr_c, 0.5)
         arr_c = np.array([0.5+3.0j, 2.1+0.5j, 1.6+2.3j], dtype='D')

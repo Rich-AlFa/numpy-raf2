@@ -104,7 +104,7 @@ def assert_equal_records(a, b):
     assert_equal(a.dtype, b.dtype)
     for f in a.dtype.names:
         (af, bf) = (operator.getitem(a, f), operator.getitem(b, f))
-        if not (af is masked) and not (bf is masked):
+        if af is not masked and bf is not masked:
             assert_equal(operator.getitem(a, f), operator.getitem(b, f))
     return
 
@@ -133,8 +133,8 @@ def assert_equal(actual, desired, err_msg=''):
             raise AssertionError(msg)
         return
     # Case #4. arrays or equivalent
-    if ((actual is masked) and not (desired is masked)) or \
-            ((desired is masked) and not (actual is masked)):
+    if ((actual is masked) and desired is not masked) or \
+            ((desired is masked) and actual is not masked):
         msg = build_err_msg([actual, desired],
                             err_msg, header='', names=('x', 'y'))
         raise ValueError(msg)
@@ -208,8 +208,8 @@ def assert_array_compare(comparison, x, y, err_msg='', verbose=True, header='',
     m = mask_or(getmask(x), getmask(y))
     x = masked_array(x, copy=False, mask=m, keep_mask=False, subok=False)
     y = masked_array(y, copy=False, mask=m, keep_mask=False, subok=False)
-    if ((x is masked) and not (y is masked)) or \
-            ((y is masked) and not (x is masked)):
+    if ((x is masked) and y is not masked) or \
+            ((y is masked) and x is not masked):
         msg = build_err_msg([x, y], err_msg=err_msg, verbose=verbose,
                             header=header, names=('x', 'y'))
         raise ValueError(msg)

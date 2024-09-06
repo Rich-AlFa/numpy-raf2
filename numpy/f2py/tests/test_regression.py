@@ -77,7 +77,7 @@ class TestIncludeFiles(util.F2PyTest):
     def test_gh25344(self):
         exp = 7.0
         res = self.module.add(3.0, 4.0)
-        assert  exp == res
+        assert exp == res
 
 class TestF77Comments(util.F2PyTest):
     # Check that comments are stripped from F77 continuation lines
@@ -88,8 +88,8 @@ class TestF77Comments(util.F2PyTest):
         x1 = np.array(3, dtype=np.int32)
         x2 = np.array(5, dtype=np.int32)
         res=self.module.testsub(x1, x2)
-        assert(res[0] == 8)
-        assert(res[1] == 15)
+        assert res[0] == 8
+        assert res[1] == 15
 
     @pytest.mark.slow
     def test_gh26466(self):
@@ -107,8 +107,8 @@ class TestF90Contiuation(util.F2PyTest):
         x1 = np.array(3, dtype=np.int32)
         x2 = np.array(5, dtype=np.int32)
         res=self.module.testsub(x1, x2)
-        assert(res[0] == 8)
-        assert(res[1] == 15)
+        assert res[0] == 8
+        assert res[1] == 15
 
 @pytest.mark.slow
 def test_gh26623():

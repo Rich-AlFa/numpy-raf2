@@ -18,4 +18,5 @@ arr: np.ndarray[XYGrid, Any] = cast(
 def accepts_2d(a: np.ndarray[tuple[int, int], Any]) -> None:
     return None
 
+
 accepts_2d(arr)

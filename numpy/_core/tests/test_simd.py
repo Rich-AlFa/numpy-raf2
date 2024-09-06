@@ -11,10 +11,10 @@ from numpy._core._multiarray_umath import __cpu_baseline__
 def check_floatstatus(divbyzero=False, overflow=False,
                       underflow=False, invalid=False,
                       all=False):
-    #define NPY_FPE_DIVIDEBYZERO  1
-    #define NPY_FPE_OVERFLOW      2
-    #define NPY_FPE_UNDERFLOW     4
-    #define NPY_FPE_INVALID       8
+    # define NPY_FPE_DIVIDEBYZERO  1
+    # define NPY_FPE_OVERFLOW      2
+    # define NPY_FPE_UNDERFLOW     4
+    # define NPY_FPE_INVALID       8
     err = get_floatstatus()
     ret = (all or divbyzero) and (err & 1) != 0
     ret |= (all or overflow) and (err & 2) != 0
@@ -118,7 +118,7 @@ class _Test_Utility:
         if target == "baseline":
             target = __cpu_baseline__
         else:
-            target = target.split('__') # multi-target separator
+            target = target.split('__')  # multi-target separator
         return ' '.join(target)
 
 class _SIMD_BOOL(_Test_Utility):
@@ -185,7 +185,8 @@ class _SIMD_BOOL(_Test_Utility):
         assert data_xnor == vxnor
 
     def test_tobits(self):
-        data2bits = lambda data: sum([int(x != 0) << i for i, x in enumerate(data, 0)])
+        def data2bits(data):
+            return sum([int(x != 0) << i for i, x in enumerate(data, 0)])
         for data in (self._data(), self._data(reverse=True)):
             vdata = self._load_b(data)
             data_bits = data2bits(data)
@@ -336,7 +337,8 @@ class _SIMD_FP32(_Test_Utility):
         if not self.npyv.simd_f64 and re.match(r".*(NEON|ASIMD)", features):
             # very costly to emulate nearest even on Armv7
             # instead we round halves to up. e.g. 0.5 -> 1, -0.5 -> -1
-            _round = lambda v: int(v + (0.5 if v >= 0 else -0.5))
+            def _round(v):
+                return int(v + (0.5 if v >= 0 else -0.5))
         else:
             _round = round
         vdata_a = self.load(self._data())
@@ -416,7 +418,8 @@ class _SIMD_FP(_Test_Utility):
             sqrt  = self.sqrt(self.setall(case))
             assert sqrt == pytest.approx(data_sqrt, nan_ok=True)
 
-        data_sqrt = self.load([math.sqrt(x) for x in data]) # load to truncate precision
+        data_sqrt = self.load([math.sqrt(x)  # load to truncate precision
+                               for x in data])
         sqrt = self.sqrt(vdata)
         assert sqrt == data_sqrt
 
@@ -530,13 +533,11 @@ class _SIMD_FP(_Test_Utility):
         if not chk_nan:
             return
         if chk_nan == 1:
-            test_nan = lambda a, b: (
-                b if math.isnan(a) else a if math.isnan(b) else b
-            )
+            def test_nan(a, b):
+                return b if math.isnan(a) else a if math.isnan(b) else b
         else:
-            test_nan = lambda a, b: (
-                nan if math.isnan(a) or math.isnan(b) else b
-            )
+            def test_nan(a, b):
+                return nan if math.isnan(a) or math.isnan(b) else b
         cases = (
             (nan, 10),
             (10, nan),
@@ -566,7 +567,7 @@ class _SIMD_FP(_Test_Utility):
             recip = self.recip(self.setall(case))
             assert recip == pytest.approx(data_recip, nan_ok=True)
 
-        data_recip = self.load([1/x for x in data]) # load to truncate precision
+        data_recip = self.load([1/x for x in data])  # load to truncate precision
         recip = self.recip(vdata)
         assert recip == data_recip
 
@@ -660,7 +661,7 @@ class _SIMD_ALL(_Test_Utility):
         loadl_half = list(loadl)[:self.nlanes//2]
         data_half = data[:self.nlanes//2]
         assert loadl_half == data_half
-        assert loadl != data # detect overflow
+        assert loadl != data  # detect overflow
 
     def test_memory_store(self):
         data = self._data()
@@ -681,7 +682,7 @@ class _SIMD_ALL(_Test_Utility):
         store_l = [0] * self.nlanes
         self.storel(store_l, vdata)
         assert store_l[:self.nlanes//2] == data[:self.nlanes//2]
-        assert store_l != vdata # detect overflow
+        assert store_l != vdata  # detect overflow
         # store higher part
         store_h = [0] * self.nlanes
         self.storeh(store_h, vdata)
@@ -698,7 +699,7 @@ class _SIMD_ALL(_Test_Utility):
         npyv_load_tillz, npyv_load_till = eval(intrin)
         data = self._data()
         lanes = list(range(1, self.nlanes + 1))
-        lanes += [self.nlanes**2, self.nlanes**4] # test out of range
+        lanes += [self.nlanes**2, self.nlanes**4]  # test out of range
         for n in lanes:
             load_till = npyv_load_till(data, n, *fill)
             load_tillz = npyv_load_tillz(data, n)
@@ -987,8 +988,9 @@ class _SIMD_ALL(_Test_Utility):
         if ssize == 64:
             return
         data_rev64 = [
-            y for x in range(0, self.nlanes, 64//ssize)
-              for y in reversed(range(x, x + 64//ssize))
+            y
+            for x in range(0, self.nlanes, 64//ssize)
+            for y in reversed(range(x, x + 64//ssize))
         ]
         rev64 = self.rev64(self.load(range(self.nlanes)))
         assert rev64 == data_rev64
@@ -1143,7 +1145,7 @@ class _SIMD_ALL(_Test_Utility):
         vdata_a, vdata_b = self.load(data_a), self.load(data_b)
 
         # non-saturated
-        data_add = self.load([a + b for a, b in zip(data_a, data_b)]) # load to cast
+        data_add = self.load([a + b for a, b in zip(data_a, data_b)])  # load to cast
         add  = self.add(vdata_a, vdata_b)
         assert add == data_add
         data_sub  = self.load([a - b for a, b in zip(data_a, data_b)])
@@ -1289,6 +1291,7 @@ class _SIMD_ALL(_Test_Utility):
         ifdivz = self.ifdivz(false_mask, vdata_a, vdata_b)
         assert ifdivz == self.zero()
 
+
 bool_sfx = ("b8", "b16", "b32", "b64")
 int_sfx = ("u8", "s8", "u16", "s16", "u32", "s32", "u64", "s64")
 fp_sfx  = ("f32", "f64")
@@ -1303,7 +1306,7 @@ tests_registry = {
 }
 for target_name, npyv in targets.items():
     simd_width = npyv.simd if npyv else ''
-    pretty_name = target_name.split('__') # multi-target separator
+    pretty_name = target_name.split('__')  # multi-target separator
     if len(pretty_name) > 1:
         # multi-target
         pretty_name = f"({' '.join(pretty_name)})"

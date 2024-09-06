@@ -330,7 +330,7 @@ class TestModulus:
                 fa = a.astype(dt)
                 fb = b.astype(dt)
                 # use list comprehension so a_ and b_ are scalars
-                div, rem = zip(*[op(a_, b_) for  a_, b_ in zip(fa, fb)])
+                div, rem = zip(*[op(a_, b_) for a_, b_ in zip(fa, fb)])
                 assert_equal(div, tgtdiv, err_msg=msg)
                 assert_equal(rem, tgtrem, err_msg=msg)
 
@@ -377,8 +377,8 @@ class TestModulus:
                 rem = operator.mod(fone, fzer)
                 assert_(np.isnan(rem), 'dt: %s' % dt)
                 # MSVC 2008 returns NaN here, so disable the check.
-                #rem = operator.mod(fone, finf)
-                #assert_(rem == fone, 'dt: %s' % dt)
+                # rem = operator.mod(fone, finf)
+                # assert_(rem == fone, 'dt: %s' % dt)
                 rem = operator.mod(fone, fnan)
                 assert_(np.isnan(rem), 'dt: %s' % dt)
                 rem = operator.mod(finf, fone)
@@ -554,13 +554,13 @@ class TestConversion:
                 assert_(not np.array(1, dtype=dt1)[()] < np.array(0, dtype=dt2)[()],
                         "type %s and %s failed" % (dt1, dt2))
 
-        #Unsigned integers
+        # Unsigned integers
         for dt1 in 'BHILQP':
             assert_(-1 < np.array(1, dtype=dt1)[()], "type %s failed" % (dt1,))
             assert_(not -1 > np.array(1, dtype=dt1)[()], "type %s failed" % (dt1,))
             assert_(-1 != np.array(1, dtype=dt1)[()], "type %s failed" % (dt1,))
 
-            #unsigned vs signed
+            # unsigned vs signed
             for dt2 in 'bhilqp':
                 assert_(np.array(1, dtype=dt1)[()] > np.array(-1, dtype=dt2)[()],
                         "type %s and %s failed" % (dt1, dt2))
@@ -569,7 +569,7 @@ class TestConversion:
                 assert_(np.array(1, dtype=dt1)[()] != np.array(-1, dtype=dt2)[()],
                         "type %s and %s failed" % (dt1, dt2))
 
-        #Signed integers and floats
+        # Signed integers and floats
         for dt1 in 'bhlqp' + np.typecodes['Float']:
             assert_(1 > np.array(-1, dtype=dt1)[()], "type %s failed" % (dt1,))
             assert_(not 1 < np.array(-1, dtype=dt1)[()], "type %s failed" % (dt1,))
@@ -605,7 +605,7 @@ class TestConversion:
         assert_(np.equal(np.datetime64('NaT'), None))
 
 
-#class TestRepr:
+# class TestRepr:
 #    def test_repr(self):
 #        for t in types:
 #            val = t(1197346475.0137341)
@@ -1052,7 +1052,7 @@ def test_subclass_deferral(sctype, __op__, __rop__, op, cmp):
 
     # inheritance has to override, or this is correctly lost:
     res = op(myf_simple1(1), myf_simple2(2))
-    assert type(res) == sctype or type(res) == np.bool
+    assert type(res) is sctype or type(res) is np.bool
     assert op(myf_simple1(1), myf_simple2(2)) == op(1, 2)  # inherited
 
     # Two independent subclasses do not really define an order.  This could
@@ -1089,7 +1089,7 @@ def test_pyscalar_subclasses(subtype, __op__, __rop__, op, cmp):
     assert op(myt(1), np.float64(2)) == __op__
     assert op(np.float64(1), myt(2)) == __rop__
 
-    if op in {operator.mod, operator.floordiv} and subtype == complex:
+    if op in {operator.mod, operator.floordiv} and subtype is complex:
         return  # module is not support for complex.  Do not test.
 
     if __rop__ == __op__:
@@ -1097,17 +1097,19 @@ def test_pyscalar_subclasses(subtype, __op__, __rop__, op, cmp):
 
     # When no deferring is indicated, subclasses are handled normally.
     myt = type("myt", (subtype,), {__rop__: rop_func})
-    behaves_like = lambda x: np.array(subtype(x))[()]
+
+    def behaves_like(x):
+        return np.array(subtype(x))[()]
 
     # Check for float32, as a float subclass float64 may behave differently
     res = op(myt(1), np.float16(2))
     expected = op(behaves_like(1), np.float16(2))
     assert res == expected
-    assert type(res) == type(expected)
+    assert type(res) is type(expected)
     res = op(np.float32(2), myt(1))
     expected = op(np.float32(2), behaves_like(1))
     assert res == expected
-    assert type(res) == type(expected)
+    assert type(res) is type(expected)
 
     # Same check for longdouble (compare via dtype to accept float64 when
     # longdouble has the identical size), which is currently not perfectly
@@ -1141,7 +1143,9 @@ def test_scalar_matches_array_op_with_pyscalar(op, sctype, other_type, rop):
 
     if rop:
         _op = op
-        op = lambda x, y: _op(y, x)
+
+        def op(x, y):
+            return _op(y, x)
 
     try:
         res = op(val1, val2)

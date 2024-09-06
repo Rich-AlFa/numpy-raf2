@@ -11,7 +11,6 @@ from typing_extensions import Never
 
 import numpy as np
 
-
 _Device: TypeAlias = Literal["cpu"]
 _DeviceLike: TypeAlias = None | _Device
 
@@ -33,7 +32,6 @@ _DefaultDTypes = TypedDict(
     },
 )
 
-
 _KindBool: TypeAlias = Literal["bool"]
 _KindInt: TypeAlias = Literal["signed integer"]
 _KindUInt: TypeAlias = Literal["unsigned integer"]
@@ -50,7 +48,6 @@ _Kind: TypeAlias = (
     | _KindComplex
     | _KindNumber
 )
-
 
 _T1 = TypeVar("_T1")
 _T2 = TypeVar("_T2")
@@ -111,7 +108,6 @@ class _DTypesUnion(TypedDict, total=False):
     complex128: np.dtype[np.complex128]
 
 _EmptyDict: TypeAlias = dict[Never, Never]
-
 
 @final
 class __array_namespace_info__:

@@ -643,8 +643,11 @@ class TestAssignment:
         b = np.array([b'done'])
 
         class bad_sequence:
-            def __getitem__(self): pass
-            def __len__(self): raise RuntimeError
+            def __getitem__(self):
+                pass
+
+            def __len__(self):
+                raise RuntimeError
 
         assert_raises(ValueError, operator.setitem, u, 0, [])
         assert_raises(ValueError, operator.setitem, b, 0, [])
@@ -967,7 +970,6 @@ class TestCreation:
                 [np.array(1, dtype="i,i")[idx], np.array(2, dtype='i,i,i')[idx]],
                 dtype="V")
 
-
     def test_too_big_error(self):
         # 45341 is the smallest integer greater than sqrt(2**31 - 1).
         # 3037000500 is the smallest integer greater than sqrt(2**63 - 1).
@@ -1022,7 +1024,7 @@ class TestCreation:
             # This test can fail on 32-bit systems due to insufficient
             # contiguous memory. Deallocating the previous array increases the
             # chance of success.
-            del(d)
+            del d
 
     def test_zeros_obj(self):
         # test initialization from PyLong(0)
@@ -1133,7 +1135,7 @@ class TestCreation:
             def __len__(self):
                 return 42
 
-        a = np.array(C()) # segfault?
+        a = np.array(C())  # segfault?
         assert_equal(len(a), 0)
 
     def test_false_len_iterable(self):
@@ -1555,7 +1557,7 @@ class TestStructured:
         def testassign(arr, v):
             c = arr.copy()
             c[0] = v  # assign using setitem
-            c[1:] = v # assign using "dtype_transfer" code paths
+            c[1:] = v  # assign using "dtype_transfer" code paths
             return c
 
         dt = np.dtype([('foo', 'i8'), ('bar', 'i8')])
@@ -2289,11 +2291,11 @@ class TestMethods:
             arr[::-1].sort()
 
     def test_sort_raises(self):
-        #gh-9404
+        # gh-9404
         arr = np.array([0, datetime.now(), 1], dtype=object)
         for kind in self.sort_kinds:
             assert_raises(TypeError, arr.sort, kind=kind)
-        #gh-3879
+        # gh-3879
         class Raiser:
             def raises_anything(*args, **kwargs):
                 raise TypeError("SOMETHING ERRORED")
@@ -3213,7 +3215,6 @@ class TestMethods:
         assert_equal(x1.flatten('F'), y1f)
         assert_equal(x1.flatten('F'), x1.T.flatten())
 
-
     @pytest.mark.parametrize('func', (np.dot, np.matmul))
     def test_arr_mult(self, func):
         a = np.array([[1, 0], [0, 1]])
@@ -3234,7 +3235,6 @@ class TestMethods:
              [648, 700, 752, 804, 856, 908],
              [684, 740, 796, 852, 908, 964]]
         )
-
 
         # gemm vs syrk optimizations
         for et in [np.float32, np.float64, np.complex64, np.complex128]:
@@ -3542,7 +3542,6 @@ class TestMethods:
         with pytest.raises(IndexError,
                             match="cannot replace elements of an empty array"):
             np.put(empty_array, 1, 1, mode="clip")
-
 
     def test_ravel(self):
         a = np.array([[0, 1], [2, 3]])
@@ -4859,7 +4858,6 @@ class TestArgmax:
         assert_equal(np.argmax(rarr), rpos, err_msg="%r" % rarr)
         assert_equal(rarr[np.argmax(rarr)], val, err_msg="%r" % rarr)
 
-
     def test_maximum_signed_integers(self):
 
         a = np.array([1, 2**7 - 1, -2**7], dtype=np.int8)
@@ -5374,7 +5372,7 @@ class TestLexsort:
             u, v = np.array(u, dtype='object'), np.array(v, dtype='object')
             assert_array_equal(idx, np.lexsort((u, v)))
 
-    def test_invalid_axis(self): # gh-7528
+    def test_invalid_axis(self):  # gh-7528
         x = np.linspace(0., 1., 42*3).reshape(42, 3)
         assert_raises(AxisError, np.lexsort, x, axis=2)
 
@@ -5761,7 +5759,7 @@ class TestIO:
             x.tofile(f, sep=',')
         with open(tmp_filename, 'r') as f:
             s = f.read()
-        #assert_equal(s, '1.51,2.0,3.51,4.0')
+        # assert_equal(s, '1.51,2.0,3.51,4.0')
         y = np.array([float(p) for p in s.split(',')])
         assert_array_equal(x,y)
 
@@ -7223,24 +7221,24 @@ class TestMatmul(MatmulCommon):
     vr = np.arange(6.)
     m0 = np.zeros((3, 0))
     @pytest.mark.parametrize('args', (
-            # matrix-matrix
-            (m1, m2), (m2.T, m1.T), (m2.T.copy(), m1.T), (m2.T, m1.T.copy()),
-            # matrix-matrix-transpose, contiguous and non
-            (m1, m1.T), (m1.T, m1), (m1, m3.T), (m3, m1.T),
-            (m3, m3.T), (m3.T, m3),
-            # matrix-matrix non-contiguous
-            (m3, m2), (m2.T, m3.T), (m2.T.copy(), m3.T),
-            # vector-matrix, matrix-vector, contiguous
-            (m1, vr[:3]), (vc[:5], m1), (m1.T, vc[:5]), (vr[:3], m1.T),
-            # vector-matrix, matrix-vector, vector non-contiguous
-            (m1, vr[::2]), (vc[::2], m1), (m1.T, vc[::2]), (vr[::2], m1.T),
-            # vector-matrix, matrix-vector, matrix non-contiguous
-            (m3, vr[:3]), (vc[:5], m3), (m3.T, vc[:5]), (vr[:3], m3.T),
-            # vector-matrix, matrix-vector, both non-contiguous
-            (m3, vr[::2]), (vc[::2], m3), (m3.T, vc[::2]), (vr[::2], m3.T),
-            # size == 0
-            (m0, m0.T), (m0.T, m0), (m1, m0), (m0.T, m1.T),
-        ))
+        # matrix-matrix
+        (m1, m2), (m2.T, m1.T), (m2.T.copy(), m1.T), (m2.T, m1.T.copy()),
+        # matrix-matrix-transpose, contiguous and non
+        (m1, m1.T), (m1.T, m1), (m1, m3.T), (m3, m1.T),
+        (m3, m3.T), (m3.T, m3),
+        # matrix-matrix non-contiguous
+        (m3, m2), (m2.T, m3.T), (m2.T.copy(), m3.T),
+        # vector-matrix, matrix-vector, contiguous
+        (m1, vr[:3]), (vc[:5], m1), (m1.T, vc[:5]), (vr[:3], m1.T),
+        # vector-matrix, matrix-vector, vector non-contiguous
+        (m1, vr[::2]), (vc[::2], m1), (m1.T, vc[::2]), (vr[::2], m1.T),
+        # vector-matrix, matrix-vector, matrix non-contiguous
+        (m3, vr[:3]), (vc[:5], m3), (m3.T, vc[:5]), (vr[:3], m3.T),
+        # vector-matrix, matrix-vector, both non-contiguous
+        (m3, vr[::2]), (vc[::2], m3), (m3.T, vc[::2]), (vr[::2], m3.T),
+        # size == 0
+        (m0, m0.T), (m0.T, m0), (m1, m0), (m0.T, m1.T),
+    ))
     def test_dot_equivalent(self, args):
         r1 = np.matmul(*args)
         r2 = np.dot(*args)
@@ -7518,7 +7516,7 @@ class TestChoose:
          (1., np.array([3], dtype=np.float32))],)
     def test_output_dtype(self, ops):
         expected_dt = np.result_type(*ops)
-        assert(np.choose([0], ops).dtype == expected_dt)
+        assert np.choose([0], ops).dtype == expected_dt
 
     def test_dimension_and_args_limit(self):
         # Maxdims for the legacy iterator is 32, but the maximum number
@@ -8721,7 +8719,6 @@ class TestArrayInterface:
         def __array_interface__(self):
             return self.iface
 
-
     f = Foo(0.5)
 
     @pytest.mark.parametrize('val, iface, expected', [
@@ -8801,7 +8798,6 @@ def test_array_interface_offset():
     interface['data'] = memoryview(arr)
     interface['shape'] = (2,)
     interface['offset'] = 4
-
 
     class DummyArray:
         __array_interface__ = interface

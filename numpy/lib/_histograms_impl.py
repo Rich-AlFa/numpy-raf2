@@ -269,6 +269,7 @@ def _hist_bin_auto(x, range):
         # limited variance, so we return a len dependent bw estimator
         return sturges_bw
 
+
 # Private dict initialized at module load time
 _hist_bin_selectors = {'stone': _hist_bin_stone,
                        'auto': _hist_bin_auto,
@@ -1029,7 +1030,7 @@ def histogramdd(sample, bins=10, range=None, density=None, weights=None):
 
             except TypeError as e:
                 raise TypeError(
-                	"`bins[{}]` must be an integer, when a scalar".format(i)
+                    "`bins[{}]` must be an integer, when a scalar".format(i)
                 ) from e
 
             edges[i] = np.linspace(smin, smax, n + 1)

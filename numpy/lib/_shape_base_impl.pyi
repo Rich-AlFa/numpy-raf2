@@ -53,7 +53,6 @@ class _SupportsArrayWrap(Protocol):
     @property
     def __array_wrap__(self) -> _ArrayWrap: ...
 
-
 __all__: list[str]
 
 def take_along_axis(

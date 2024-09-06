@@ -329,6 +329,7 @@ if __name__ == "__main__":
             )
             self._expect_error(msg, err_type)
 
+
 is_linux = sys.platform.startswith('linux')
 is_cygwin = sys.platform.startswith('cygwin')
 machine  = platform.machine()
@@ -368,6 +369,7 @@ class Test_X86_Features(AbstractTest):
     def load_flags(self):
         self.load_flags_cpuinfo("flags")
 
+
 is_power = re.match("^(powerpc|ppc)64", machine, re.IGNORECASE)
 @pytest.mark.skipif(not is_linux or not is_power, reason="Only for Linux and Power")
 class Test_POWER_Features(AbstractTest):
@@ -403,7 +405,7 @@ class Test_ARM_Features(AbstractTest):
         arch = self.get_cpuinfo_item("CPU architecture")
         # in case of mounting virtual filesystem of aarch64 kernel
         is_rootfs_v8 = int('0'+next(iter(arch))) > 7 if arch else 0
-        if  re.match("^(aarch64|AARCH64)", machine) or is_rootfs_v8:
+        if re.match("^(aarch64|AARCH64)", machine) or is_rootfs_v8:
             self.features_map = dict(
                 NEON="ASIMD", HALF="ASIMD", VFPV4="ASIMD"
             )

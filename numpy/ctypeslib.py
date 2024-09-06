@@ -167,6 +167,7 @@ def _num_fromflags(flaglist):
         num += _flagdict[val]
     return num
 
+
 _flagnames = ['C_CONTIGUOUS', 'F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE',
               'OWNDATA', 'WRITEBACKIFCOPY']
 def _flags_fromnum(num):
@@ -356,7 +357,6 @@ if ctypes is not None:
             element_type.__module__ = None
         return element_type
 
-
     def _get_scalar_type_map():
         """
         Return a dictionary mapping native endian scalar dtype to ctypes types
@@ -370,9 +370,7 @@ if ctypes is not None:
         ]
         return {_dtype(ctype): ctype for ctype in simple_types}
 
-
     _scalar_type_map = _get_scalar_type_map()
-
 
     def _ctype_from_dtype_scalar(dtype):
         # swapping twice ensure that `=` is promoted to <, >, or |
@@ -392,12 +390,10 @@ if ctypes is not None:
 
         return ctype
 
-
     def _ctype_from_dtype_subarray(dtype):
         element_dtype, shape = dtype.subdtype
         ctype = _ctype_from_dtype(element_dtype)
         return _ctype_ndarray(ctype, shape)
-
 
     def _ctype_from_dtype_structured(dtype):
         # extract offsets of each field
@@ -440,7 +436,6 @@ if ctypes is not None:
                 _fields_.append((name, ctype))
                 last_offset = offset + ctypes.sizeof(ctype)
 
-
             padding = dtype.itemsize - last_offset
             if padding > 0:
                 _fields_.append(('', ctypes.c_char * padding))
@@ -452,7 +447,6 @@ if ctypes is not None:
                 __module__=None,
             ))
 
-
     def _ctype_from_dtype(dtype):
         if dtype.fields is not None:
             return _ctype_from_dtype_structured(dtype)
@@ -460,7 +454,6 @@ if ctypes is not None:
             return _ctype_from_dtype_subarray(dtype)
         else:
             return _ctype_from_dtype_scalar(dtype)
-
 
     def as_ctypes_type(dtype):
         r"""
@@ -518,7 +511,6 @@ if ctypes is not None:
         """
         return _ctype_from_dtype(_dtype(dtype))
 
-
     def as_array(obj, shape=None):
         """
         Create a numpy array from a ctypes array or POINTER.
@@ -538,7 +530,6 @@ if ctypes is not None:
             obj = ctypes.cast(obj, p_arr_type).contents
 
         return asarray(obj)
-
 
     def as_ctypes(obj):
         """Create and return a ctypes object from a numpy array.  Actually

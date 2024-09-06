@@ -44,9 +44,7 @@ from ._polytypes import (
 
 from typing_extensions import LiteralString
 
-
 __all__: Final[Sequence[str]] = ("ABCPolyBase",)
-
 
 _NameCo = TypeVar("_NameCo", bound=None | LiteralString, covariant=True)
 _Self = TypeVar("_Self")
@@ -54,7 +52,6 @@ _Other = TypeVar("_Other", bound=ABCPolyBase[Any])
 
 _AnyOther: TypeAlias = ABCPolyBase | _CoefLike_co | _SeriesLikeCoef_co
 _Hundred: TypeAlias = Literal[100]
-
 
 class ABCPolyBase(Generic[_NameCo], metaclass=abc.ABCMeta):
     __hash__: ClassVar[None]  # type: ignore[assignment]

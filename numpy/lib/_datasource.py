@@ -149,6 +149,7 @@ class _FileOpeners:
         self._load()
         return self._file_openers[key]
 
+
 _file_openers = _FileOpeners()
 
 def open(path, mode='r', destpath=os.curdir, encoding=None, newline=None):
@@ -474,7 +475,7 @@ class DataSource:
             try:
                 netfile = urlopen(path)
                 netfile.close()
-                del(netfile)
+                del netfile
                 return True
             except URLError:
                 return False

@@ -135,7 +135,7 @@ def poly(seq_of_zeros):
     elif len(sh) == 1:
         dt = seq_of_zeros.dtype
         # Let object arrays slip through, e.g. for arbitrary precision
-        if dt != object:
+        if dt is not object:
             seq_of_zeros = seq_of_zeros.astype(mintypecode(dt.char))
     else:
         raise ValueError("input must be 1d or non-empty square 2d array.")
@@ -1049,6 +1049,7 @@ def polydiv(u, v):
         return poly1d(q), poly1d(r)
     return q, r
 
+
 _poly_mat = re.compile(r"\*\*([0-9]*)")
 def _raise_power(astr, wrap=70):
     n = 0
@@ -1404,7 +1405,6 @@ class poly1d:
             return NotImplemented
         return not self.__eq__(other)
 
-
     def __getitem__(self, val):
         ind = self.order - val
         if val > self.order:
@@ -1454,5 +1454,6 @@ class poly1d:
         return poly1d(polyder(self.coeffs, m=m))
 
 # Stuff to do on module import
+
 
 warnings.simplefilter('always', RankWarning)

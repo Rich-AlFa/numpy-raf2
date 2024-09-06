@@ -38,7 +38,8 @@ class Test_SIMD_MODULE:
     def test_raises(self):
         a, b = [npyv.setall_u32(1)]*2
         for sfx in all_sfx:
-            vcb = lambda intrin: getattr(npyv, f"{intrin}_{sfx}")
+            def vcb(intrin):
+                return getattr(npyv, f"{intrin}_{sfx}")
             pytest.raises(TypeError, vcb("add"), a)
             pytest.raises(TypeError, vcb("add"), a, b, a)
             pytest.raises(TypeError, vcb("setall"))

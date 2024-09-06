@@ -303,7 +303,7 @@ def deprecate_with_doc(msg):
     return _Deprecate(message=msg)
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 
 # NOTE:  pydoc defines a help function which works similarly to this
@@ -330,6 +330,7 @@ def _split_line(name, arguments, width):
         else:
             newstr = newstr + addstr + argument
     return newstr
+
 
 _namedict = None
 _dictlist = None
@@ -376,7 +377,10 @@ def _info(obj, output=None):
     """
     extra = ""
     tic = ""
-    bp = lambda x: x
+
+    def bp(x):
+        return x
+
     cls = getattr(obj, '__class__', type(obj))
     nm = getattr(cls, '__name__', cls)
     strides = obj.strides

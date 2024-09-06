@@ -58,7 +58,6 @@ _AbstractTypeName: TypeAlias = L[
 ]
 _abstract_type_names: Final[set[_AbstractTypeName]]
 
-
 class _AliasesType(TypedDict):
     double: L["float64"]
     cdouble: L["complex128"]

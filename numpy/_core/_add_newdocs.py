@@ -5826,7 +5826,6 @@ add_newdoc('numpy._core', 'ufunc', ('_get_strided_loop',
     """))
 
 
-
 ##############################################################################
 #
 # Documentation for dtype attributes and methods

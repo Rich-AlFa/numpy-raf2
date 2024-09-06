@@ -338,17 +338,17 @@ class MachAr:
 
     def __str__(self):
         fmt = (
-           'Machine parameters for %(title)s\n'
-           '---------------------------------------------------------------------\n'
-           'ibeta=%(ibeta)s it=%(it)s iexp=%(iexp)s ngrd=%(ngrd)s irnd=%(irnd)s\n'
-           'machep=%(machep)s     eps=%(_str_eps)s (beta**machep == epsilon)\n'
-           'negep =%(negep)s  epsneg=%(_str_epsneg)s (beta**epsneg)\n'
-           'minexp=%(minexp)s   xmin=%(_str_xmin)s (beta**minexp == tiny)\n'
-           'maxexp=%(maxexp)s    xmax=%(_str_xmax)s ((1-epsneg)*beta**maxexp == huge)\n'
-           'smallest_normal=%(smallest_normal)s    '
-           'smallest_subnormal=%(smallest_subnormal)s\n'
-           '---------------------------------------------------------------------\n'
-           )
+            'Machine parameters for %(title)s\n'
+            '---------------------------------------------------------------------\n'
+            'ibeta=%(ibeta)s it=%(it)s iexp=%(iexp)s ngrd=%(ngrd)s irnd=%(irnd)s\n'
+            'machep=%(machep)s     eps=%(_str_eps)s (beta**machep == epsilon)\n'
+            'negep =%(negep)s  epsneg=%(_str_epsneg)s (beta**epsneg)\n'
+            'minexp=%(minexp)s   xmin=%(_str_xmin)s (beta**minexp == tiny)\n'
+            'maxexp=%(maxexp)s    xmax=%(_str_xmax)s ((1-epsneg)*beta**maxexp == huge)\n'  # noqa: E501
+            'smallest_normal=%(smallest_normal)s    '
+            'smallest_subnormal=%(smallest_subnormal)s\n'
+            '---------------------------------------------------------------------\n'
+        )
         return fmt % self.__dict__
 
 

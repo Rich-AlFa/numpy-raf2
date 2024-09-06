@@ -31,7 +31,7 @@ NUMPY_DIR = os.path.join(ROOT_DIR, 'numpy')
 
 # Files whose installation path will be different from original one
 changed_installed_path = {
-    #'numpy/_build_utils/some_file.py': 'numpy/lib/some_file.py'
+    # 'numpy/_build_utils/some_file.py': 'numpy/lib/some_file.py'
 }
 
 

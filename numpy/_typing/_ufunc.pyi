@@ -61,7 +61,6 @@ class _SupportsArrayUFunc(Protocol):
         **kwargs: Any,
     ) -> Any: ...
 
-
 # NOTE: `reduce`, `accumulate`, `reduceat` and `outer` raise a ValueError for
 # ufuncs that don't accept two input arguments and return one output argument.
 # In such cases the respective methods return `NoReturn`
@@ -139,7 +138,6 @@ class _UFunc_Nin1_Nout1(ufunc, Generic[_NameType, _NTypes, _IDType]):  # type: i
     def accumulate(self, *args, **kwargs) -> NoReturn: ...
     def reduceat(self, *args, **kwargs) -> NoReturn: ...
     def outer(self, *args, **kwargs) -> NoReturn: ...
-
 
 class _UFunc_Nin2_Nout1(ufunc, Generic[_NameType, _NTypes, _IDType]):  # type: ignore[misc]
     @property

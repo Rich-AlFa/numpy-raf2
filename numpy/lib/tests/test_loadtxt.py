@@ -1004,7 +1004,9 @@ def test_str_dtype_unit_discovery_with_converter():
     expected = np.array(
         ["spam-a-lot"] * 60000 + ["tis_but_a_scratch"], dtype="U17"
     )
-    conv = lambda s: s.removeprefix("XXX")
+
+    def conv(s):
+        return s.removeprefix("XXX")
 
     # file-like path
     txt = StringIO("\n".join(data))

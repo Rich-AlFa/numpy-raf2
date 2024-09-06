@@ -221,7 +221,7 @@ def rot90(m, k=1, axes=(0, 1)):
         raise ValueError("Axes must be different.")
 
     if (axes[0] >= m.ndim or axes[0] < -m.ndim
-        or axes[1] >= m.ndim or axes[1] < -m.ndim):
+            or axes[1] >= m.ndim or axes[1] < -m.ndim):
         raise ValueError("Axes={} out of range for array of ndim={}."
             .format(axes, m.ndim))
 
@@ -2384,8 +2384,8 @@ class vectorize:
                  excluded=None, cache=False, signature=None):
 
         if (pyfunc != np._NoValue) and (not callable(pyfunc)):
-            #Splitting the error message to keep
-            #the length below 79 characters.
+            # Splitting the error message to keep
+            # the length below 79 characters.
             part1 = "When used as a decorator, "
             part2 = "only accepts keyword arguments."
             raise TypeError(part1 + part2)
@@ -4650,13 +4650,15 @@ def _discret_interpolation_to_boundaries(index, gamma_condition_fun):
 def _closest_observation(n, quantiles):
     # "choose the nearest even order statistic at g=0" (H&F (1996) pp. 362).
     # Order is 1-based so for zero-based indexing round to nearest odd index.
-    gamma_fun = lambda gamma, index: (gamma == 0) & (np.floor(index) % 2 == 1)
+    def gamma_fun(gamma, index):
+        return (gamma == 0) & (np.floor(index) % 2 == 1)
     return _discret_interpolation_to_boundaries((n * quantiles) - 1 - 0.5,
                                                 gamma_fun)
 
 
 def _inverted_cdf(n, quantiles):
-    gamma_fun = lambda gamma, _: (gamma == 0)
+    def gamma_fun(gamma, _):
+        return gamma == 0
     return _discret_interpolation_to_boundaries((n * quantiles) - 1,
                                                 gamma_fun)
 
@@ -5549,10 +5551,10 @@ def insert(arr, obj, values, axis=None):
                 "integer", FutureWarning, stacklevel=2)
             indices = indices.astype(intp)
             # Code after warning period:
-            #if obj.ndim != 1:
+            # if obj.ndim != 1:
             #    raise ValueError('boolean array argument obj to insert '
             #                     'must be one dimensional')
-            #indices = np.flatnonzero(obj)
+            # indices = np.flatnonzero(obj)
         elif indices.ndim > 1:
             raise ValueError(
                 "index array argument obj to insert must be one dimensional "

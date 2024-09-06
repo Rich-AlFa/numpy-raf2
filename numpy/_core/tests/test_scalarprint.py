@@ -72,11 +72,15 @@ class TestRealScalars:
         # the 'code' module. Again, must use tempfile to get a "real" file.
 
         # dummy user-input which enters one line and then ctrl-Ds.
+
         def userinput():
             yield 'np.sqrt(2)'
             raise EOFError
+
         gen = userinput()
-        input_func = lambda prompt="": next(gen)
+
+        def input_func(prompt=''):
+            return next(gen)
 
         with TemporaryFile('r+t') as fo, TemporaryFile('r+t') as fe:
             orig_stdout, orig_stderr = sys.stdout, sys.stderr
@@ -95,12 +99,20 @@ class TestRealScalars:
         # these tests are adapted from Ryan Juckett's dragon4 implementation,
         # see dragon4.c for details.
 
-        fpos32 = lambda x, **k: np.format_float_positional(np.float32(x), **k)
-        fsci32 = lambda x, **k: np.format_float_scientific(np.float32(x), **k)
-        fpos64 = lambda x, **k: np.format_float_positional(np.float64(x), **k)
-        fsci64 = lambda x, **k: np.format_float_scientific(np.float64(x), **k)
+        def fpos32(x, **k):
+            return np.format_float_positional(np.float32(x), **k)
 
-        preckwd = lambda prec: {'unique': False, 'precision': prec}
+        def fsci32(x, **k):
+            return np.format_float_scientific(np.float32(x), **k)
+
+        def fpos64(x, **k):
+            return np.format_float_positional(np.float64(x), **k)
+
+        def fsci64(x, **k):
+            return np.format_float_scientific(np.float64(x), **k)
+
+        def preckwd(prec):
+            return {'unique': False, 'precision': prec}
 
         assert_equal(fpos32('1.0'), "1.")
         assert_equal(fsci32('1.0'), "1.e+00")
@@ -124,7 +136,6 @@ class TestRealScalars:
         assert_equal(fsci64('9.9999999999999694e-311', **preckwd(16)),
                             '9.9999999999999694e-311')
 
-
         # test rounding
         # 3.1415927410 is closest float32 to np.pi
         assert_equal(fpos32('3.14159265358979323846', **preckwd(10)),
@@ -146,7 +157,6 @@ class TestRealScalars:
         assert_equal(fpos64('3.14159265358979323846', **preckwd(50)),
                          "3.14159265358979311599796346854418516159057617187500")
         assert_equal(fpos64('3.14159265358979323846'), "3.141592653589793")
-
 
         # smallest numbers
         assert_equal(fpos32(0.5**(126 + 23), unique=False, precision=149),

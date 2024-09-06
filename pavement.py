@@ -31,26 +31,26 @@ import paver
 from paver.easy import Bunch, options, task, sh
 
 
-#-----------------------------------
+# -----------------------------------
 # Things to be changed for a release
-#-----------------------------------
+# -----------------------------------
 
 # Path to the release notes
 RELEASE_NOTES = 'doc/source/release/2.2.0-notes.rst'
 
 
-#-------------------------------------------------------
+# -------------------------------------------------------
 # Hardcoded build/install dirs, virtualenv options, etc.
-#-------------------------------------------------------
+# -------------------------------------------------------
 
 # Where to put the release installers
 options(installers=Bunch(releasedir="release",
                          installersdir=os.path.join("release", "installers")),)
 
 
-#-------------
+# -------------
 # README stuff
-#-------------
+# -------------
 
 def _compute_hash(idirs, hashfunc):
     """Hash files using given hashfunc.

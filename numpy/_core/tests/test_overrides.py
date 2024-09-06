@@ -198,7 +198,10 @@ class TestNDArrayArrayFunction:
         # __array_function__ with invalid arguments, but check that we raise
         # an appropriate error all the same.
         array = np.array(1)
-        func = lambda x: x
+
+        def func(x):
+            return x
+
         with assert_raises_regex(AttributeError, '_implementation'):
             array.__array_function__(func=func, types=(np.ndarray,),
                                      args=(array,), kwargs={})
@@ -425,10 +428,10 @@ class TestArrayFunctionImplementation:
         assert repr_no_id == repr_no_id_impl
 
     @pytest.mark.parametrize("func", [
-            lambda x, y: 0,  # no like argument
-            lambda like=None: 0,  # not keyword only
-            lambda *, like=None, a=3: 0,  # not last (not that it matters)
-        ])
+        lambda x, y: 0,  # no like argument
+        lambda like=None: 0,  # not keyword only
+        lambda *, like=None, a=3: 0,  # not last (not that it matters)
+    ])
     def test_bad_like_sig(self, func):
         # We sanity check the signature, and these should fail.
         with pytest.raises(RuntimeError):
@@ -464,7 +467,6 @@ class TestArrayFunctionImplementation:
 
         with pytest.raises(TypeError, match="maximum number"):
             func(*objs)
-
 
 
 class TestNDArrayMethods:

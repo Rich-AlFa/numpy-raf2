@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # System imports
-from   math           import sqrt
 import sys
 import unittest
+from math import sqrt
 
 # Import NumPy
 import numpy as np
@@ -374,6 +374,7 @@ class doubleTestCase(TensorTestCase):
         self.typeCode = "d"
 
 ######################################################################
+
 
 if __name__ == "__main__":
 

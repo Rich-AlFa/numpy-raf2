@@ -329,11 +329,11 @@ class TestIndexing:
         assert_equal(a[np.bool(False)], a[np.array(False)])
 
         # After deprecating bools as integers:
-        #a = np.array([0,1,2])
-        #assert_equal(a[True, :], a[None, :])
-        #assert_equal(a[:, True], a[:, None])
+        # a = np.array([0,1,2])
+        # assert_equal(a[True, :], a[None, :])
+        # assert_equal(a[:, True], a[:, None])
         #
-        #assert_(not np.may_share_memory(a, a[True, :]))
+        # assert_(not np.may_share_memory(a, a[True, :]))
 
     def test_everything_returns_views(self):
         # Before `...` would return a itself.
@@ -488,7 +488,7 @@ class TestIndexing:
         x = x.view(np.dtype("S8"))
         x[...] = np.array("b" * 8, dtype="S")
         b = np.arange(d.size)
-        #trivial
+        # trivial
         assert_equal(d[b], d)
         d[b] = x
         # nontrivial
@@ -735,7 +735,6 @@ class TestSubclasses:
         s.flags.writeable = False
         s_fancy = s[[0, 1, 2]]
         assert_(s_fancy.flags.writeable)
-
 
     def test_finalize_gets_full_info(self):
         # Array finalize should be called on the filled array.

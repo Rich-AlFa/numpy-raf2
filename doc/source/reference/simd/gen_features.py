@@ -92,9 +92,11 @@ class Features:
                   **kwargs):
 
         if fstyle is None:
-            fstyle = lambda ft: f'``{ft}``'
+            def fstyle(ft):
+                return f'``{ft}``'
         if fstyle_implies is None:
-            fstyle_implies = lambda origin, ft: fstyle(ft)
+            def fstyle_implies(origin, ft):
+                return fstyle(ft)
 
         rows = []
         have_gather = False
@@ -114,7 +116,7 @@ class Features:
         return self.gen_rst_table(fields, rows, **kwargs)
 
     def gen_rst_table(self, field_names, rows, tab_size=4):
-        assert(not rows or len(field_names) == len(rows[0]))
+        assert not rows or len(field_names) == len(rows[0])
         rows.append(field_names)
         fld_len = len(field_names)
         cls_len = [max(len(c[i]) for c in rows) for i in range(fld_len)]

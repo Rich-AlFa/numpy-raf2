@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # System imports
-from   distutils.util import get_platform
 import os
 import sys
 import unittest
+from distutils.util import get_platform
 
 # Import NumPy
 import numpy as np
@@ -144,6 +144,7 @@ class FarrayTestCase(unittest.TestCase):
                 self.assertTrue(a[i, j] == i+j)
 
 ######################################################################
+
 
 if __name__ == "__main__":
 

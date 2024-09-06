@@ -50,11 +50,11 @@ class TestMintypecode:
         assert_equal(mintypecode('fD'), 'D')
         assert_equal(mintypecode('df'), 'd')
         assert_equal(mintypecode('dd'), 'd')
-        #assert_equal(mintypecode('dF',savespace=1),'F')
+        # assert_equal(mintypecode('dF',savespace=1),'F')
         assert_equal(mintypecode('dF'), 'D')
         assert_equal(mintypecode('dD'), 'D')
         assert_equal(mintypecode('Ff'), 'F')
-        #assert_equal(mintypecode('Fd',savespace=1),'F')
+        # assert_equal(mintypecode('Fd',savespace=1),'F')
         assert_equal(mintypecode('Fd'), 'D')
         assert_equal(mintypecode('FF'), 'F')
         assert_equal(mintypecode('FD'), 'D')
@@ -65,7 +65,7 @@ class TestMintypecode:
 
     def test_default_3(self):
         assert_equal(mintypecode('fdF'), 'D')
-        #assert_equal(mintypecode('fdF',savespace=1),'F')
+        # assert_equal(mintypecode('fdF',savespace=1),'F')
         assert_equal(mintypecode('fdD'), 'D')
         assert_equal(mintypecode('fFD'), 'D')
         assert_equal(mintypecode('dFD'), 'D')
@@ -74,7 +74,7 @@ class TestMintypecode:
         assert_equal(mintypecode('ifF'), 'F')
         assert_equal(mintypecode('ifD'), 'D')
         assert_equal(mintypecode('idF'), 'D')
-        #assert_equal(mintypecode('idF',savespace=1),'F')
+        # assert_equal(mintypecode('idF',savespace=1),'F')
         assert_equal(mintypecode('idD'), 'D')
 
 
@@ -435,11 +435,11 @@ class TestNanToNum:
         assert_all(np.isfinite(vals))
         assert_equal(type(vals), np.complex128)
         # Fixme
-        #assert_all(vals.imag > 1e10)  and assert_all(np.isfinite(vals))
+        # assert_all(vals.imag > 1e10)  and assert_all(np.isfinite(vals))
         # !! This is actually (unexpectedly) positive
         # !! inf.  Comment out for now, and see if it
         # !! changes
-        #assert_all(vals.real < -1e10) and assert_all(np.isfinite(vals))
+        # assert_all(vals.real < -1e10) and assert_all(np.isfinite(vals))
 
     def test_do_not_rewrite_previous_keyword(self):
         # This is done to test that when, for instance, nan=np.inf then these

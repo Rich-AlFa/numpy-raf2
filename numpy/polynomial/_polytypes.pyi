@@ -837,7 +837,6 @@ class _FuncRoots(_Named[_Name_co], Protocol[_Name_co]):
     @overload
     def __call__(self, /, c: _SeriesLikeCoef_co) -> _ObjectSeries: ...
 
-
 _Companion: TypeAlias = np.ndarray[tuple[int, int], np.dtype[_SCT]]
 
 @final

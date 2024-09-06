@@ -225,7 +225,6 @@ class TestVstack:
             vstack((a, b), casting="safe", dtype=np.int64)
 
 
-
 class TestConcatenate:
     def test_returns_copy(self):
         a = np.eye(3)
@@ -479,13 +478,13 @@ def test_stack():
     with pytest.raises(TypeError, match="arrays to stack must be"):
         stack(x for x in range(3))
 
-    #casting and dtype test
+    # casting and dtype test
     a = np.array([1, 2, 3])
     b = np.array([2.5, 3.5, 4.5])
     res = np.stack((a, b), axis=1, casting="unsafe", dtype=np.int64)
     expected_res = np.array([[1, 2], [2, 3], [3, 4]])
     assert_array_equal(res, expected_res)
-    #casting and dtype with TypeError
+    # casting and dtype with TypeError
     with assert_raises(TypeError):
         stack((a, b), dtype=np.int64, axis=1, casting="safe")
 
@@ -686,9 +685,9 @@ class TestBlock:
         result = block([
             [
                 block([
-                   [one],
-                   [three],
-                   [four]
+                    [one],
+                    [three],
+                    [four]
                 ]),
                 two
             ],

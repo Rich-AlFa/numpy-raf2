@@ -1233,7 +1233,7 @@ def apply_along_fields(func, arr):
     uarr = structured_to_unstructured(arr)
     return func(uarr, axis=-1)
     # works and avoids axis requirement, but very, very slow:
-    #return np.apply_along_axis(func, -1, uarr)
+    # return np.apply_along_axis(func, -1, uarr)
 
 def _assign_fields_by_name_dispatcher(dst, src, zero_unassigned=None):
     return dst, src
@@ -1623,7 +1623,7 @@ def join_by(key, r1, r2, jointype='inner', r1postfix='1', r2postfix='2',
         try:
             nameidx = names.index(fname)
         except ValueError:
-            #... we haven't: just add the description to the current list
+            # ... we haven't: just add the description to the current list
             ndtype.append((fname, fdtype))
         else:
             # collision

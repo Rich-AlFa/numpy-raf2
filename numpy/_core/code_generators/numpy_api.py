@@ -29,7 +29,7 @@ def get_annotations():
 
 
 StealRef, MinVersion = get_annotations()
-#from code_generators.genapi import StealRef
+# from code_generators.genapi import StealRef
 
 # index, type
 multiarray_global_vars = {

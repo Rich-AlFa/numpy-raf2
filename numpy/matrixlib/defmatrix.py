@@ -324,7 +324,6 @@ class matrix(N.ndarray):
         """
         return N.ndarray.sum(self, axis, dtype, out, keepdims=True)._collapse(axis)
 
-
     # To update docstring from array to matrix...
     def squeeze(self, axis=None):
         """
@@ -376,7 +375,6 @@ class matrix(N.ndarray):
 
         """
         return N.ndarray.squeeze(self, axis=axis)
-
 
     # To update docstring from array to matrix...
     def flatten(self, order='C'):
@@ -898,7 +896,6 @@ class matrix(N.ndarray):
 
         """
         return self.__array__().ravel()
-
 
     def ravel(self, order='C'):
         """

@@ -429,12 +429,12 @@ class TestMaskedArray:
 
         y2a = array(x1, mask=m, copy=1)
         assert_(y2a._data.__array_interface__ != x1.__array_interface__)
-        #assert_( y2a._mask is not m)
+        # assert_( y2a._mask is not m)
         assert_(y2a._mask.__array_interface__ != m.__array_interface__)
         assert_(y2a[2] is masked)
         y2a[2] = 9
         assert_(y2a[2] is not masked)
-        #assert_( y2a._mask is not m)
+        # assert_( y2a._mask is not m)
         assert_(y2a._mask.__array_interface__ != m.__array_interface__)
         assert_(allequal(y2a.mask, 0))
 
@@ -2131,13 +2131,13 @@ class TestFillingValues:
         assert_equal(fval.item(), [default_fill_value(0),
                                    default_fill_value(0.),
                                    asbytes(default_fill_value("0"))])
-        #.....Using a structured type as fill_value should work
+        # .....Using a structured type as fill_value should work
         fill_val = np.array((-999, -12345678.9, "???"), dtype=ndtype)
         fval = _check_fill_value(fill_val, ndtype)
         assert_(isinstance(fval, ndarray))
         assert_equal(fval.item(), [-999, -12345678.9, b"???"])
 
-        #.....Using a flexible type w/ a different type shouldn't matter
+        # .....Using a flexible type w/ a different type shouldn't matter
         # BEHAVIOR in 1.5 and earlier, and 1.13 and later: match structured
         # types by position
         fill_val = np.array((-999, -12345678.9, "???"),
@@ -2146,7 +2146,7 @@ class TestFillingValues:
         assert_(isinstance(fval, ndarray))
         assert_equal(fval.item(), [-999, -12345678.9, b"???"])
 
-        #.....Using an object-array shouldn't matter either
+        # .....Using an object-array shouldn't matter either
         fill_val = np.ndarray(shape=(1,), dtype=object)
         fill_val[0] = (-999, -12345678.9, b"???")
         fval = _check_fill_value(fill_val, object)
@@ -2154,11 +2154,11 @@ class TestFillingValues:
         assert_equal(fval.item(), [-999, -12345678.9, b"???"])
         # NOTE: This test was never run properly as "fill_value" rather than
         # "fill_val" was assigned.  Written properly, it fails.
-        #fill_val = np.array((-999, -12345678.9, "???"))
-        #fval = _check_fill_value(fill_val, ndtype)
-        #assert_(isinstance(fval, ndarray))
-        #assert_equal(fval.item(), [-999, -12345678.9, b"???"])
-        #.....One-field-only flexible type should work as well
+        # fill_val = np.array((-999, -12345678.9, "???"))
+        # fval = _check_fill_value(fill_val, ndtype)
+        # assert_(isinstance(fval, ndarray))
+        # assert_equal(fval.item(), [-999, -12345678.9, b"???"])
+        # .....One-field-only flexible type should work as well
         ndtype = [("a", int)]
         fval = _check_fill_value(-999999999, ndtype)
         assert_(isinstance(fval, ndarray))
@@ -4050,7 +4050,7 @@ class TestMaskedArrayMathMethods:
         bar = array([1,2,3,4], dtype='f8')
         assert_equal(type(foo.mean()), np.float64)
         assert_equal(type(foo.var()), np.float64)
-        assert((foo.mean() == bar.mean()) is np.bool(True))
+        assert (foo.mean() == bar.mean()) is np.bool(True)
 
         # check array type is preserved and out works
         foo = array(np.arange(16).reshape((4,4)), dtype='f8')
@@ -4201,7 +4201,7 @@ class TestMaskedArrayMathMethods:
         with pytest.raises(
             ValueError,
             match="diff requires input that is at least one dimensional"
-            ):
+        ):
             np.ma.diff(np.array(1))
 
     def test_diff_with_n_0(self):

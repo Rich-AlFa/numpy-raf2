@@ -91,13 +91,13 @@ html_logo = '../source/_static/numpylogo.svg'
 html_favicon = '../source/_static/favicon/favicon.ico'
 
 html_theme_options = {
-  "github_url": "https://github.com/numpy/numpy",
-  "external_links": [
-      {"name": "Wishlist",
-       "url": "https://github.com/numpy/numpy/issues?q=is%3Aopen+is%3Aissue+label%3A%2223+-+Wish+List%22",
-      },
-  ],
-  "show_prev_next": False,
+    "github_url": "https://github.com/numpy/numpy",
+    "external_links": [
+        {"name": "Wishlist",
+         "url": "https://github.com/numpy/numpy/issues?q=is%3Aopen+is%3Aissue+label%3A%2223+-+Wish+List%22",  # noqa: E501
+         },
+    ],
+    "show_prev_next": False,
 }
 
 html_title = "%s" % (project)
@@ -115,7 +115,6 @@ if 'sphinx.ext.pngmath' in extensions:
 
 plot_html_show_formats = False
 plot_html_show_source_link = False
-
 
 
 # -- Options for HTMLHelp output ------------------------------------------

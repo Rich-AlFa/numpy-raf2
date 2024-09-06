@@ -1176,20 +1176,20 @@ def test_scalar_repr_numbers(dtype, value):
 
 
 @pytest.mark.parametrize("scalar, legacy_repr, representation", [
-        (np.True_, "True", "np.True_"),
-        (np.bytes_(b'a'), "b'a'", "np.bytes_(b'a')"),
-        (np.str_('a'), "'a'", "np.str_('a')"),
-        (np.datetime64("2012"),
-            "numpy.datetime64('2012')", "np.datetime64('2012')"),
-        (np.timedelta64(1), "numpy.timedelta64(1)", "np.timedelta64(1)"),
-        (np.void((True, 2), dtype="?,<i8"),
-            "(True, 2)",
-            "np.void((True, 2), dtype=[('f0', '?'), ('f1', '<i8')])"),
-        (np.void((1, 2), dtype="<f8,>f4"),
-            "(1., 2.)",
-            "np.void((1.0, 2.0), dtype=[('f0', '<f8'), ('f1', '>f4')])"),
-        (np.void(b'a'), r"void(b'\x61')", r"np.void(b'\x61')"),
-    ])
+    (np.True_, "True", "np.True_"),
+    (np.bytes_(b'a'), "b'a'", "np.bytes_(b'a')"),
+    (np.str_('a'), "'a'", "np.str_('a')"),
+    (np.datetime64("2012"),
+        "numpy.datetime64('2012')", "np.datetime64('2012')"),
+    (np.timedelta64(1), "numpy.timedelta64(1)", "np.timedelta64(1)"),
+    (np.void((True, 2), dtype="?,<i8"),
+        "(True, 2)",
+        "np.void((True, 2), dtype=[('f0', '?'), ('f1', '<i8')])"),
+    (np.void((1, 2), dtype="<f8,>f4"),
+        "(1., 2.)",
+        "np.void((1.0, 2.0), dtype=[('f0', '<f8'), ('f1', '>f4')])"),
+    (np.void(b'a'), r"void(b'\x61')", r"np.void(b'\x61')"),
+])
 def test_scalar_repr_special(scalar, legacy_repr, representation):
     # Test NEP 51 scalar repr (and legacy option) for numeric types
     assert repr(scalar) == representation

@@ -224,9 +224,9 @@ def masked_all_like(arr):
     return a
 
 
-#####--------------------------------------------------------------------------
-#---- --- Standard functions ---
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# ---- --- Standard functions ---
+# --------------------------------------------------------------------------
 class _fromnxfunction:
     """
     Defines a wrapper to adapt NumPy functions to masked arrays.
@@ -373,9 +373,9 @@ hsplit = _fromnxfunction_single('hsplit')
 diagflat = _fromnxfunction_single('diagflat')
 
 
-#####--------------------------------------------------------------------------
-#----
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# ----
+# --------------------------------------------------------------------------
 def flatten_inplace(seq):
     """Flatten a sequence in place."""
     k = 0
@@ -466,6 +466,8 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         result = asarray(outarr, dtype=max_dtypes)
         result.fill_value = ma.default_fill_value(result)
     return result
+
+
 apply_along_axis.__doc__ = np.apply_along_axis.__doc__
 
 
@@ -1261,9 +1263,9 @@ def mask_cols(a, axis=np._NoValue):
     return mask_rowcols(a, 1)
 
 
-#####--------------------------------------------------------------------------
-#---- --- arraysetops ---
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# ---- --- arraysetops ---
+# --------------------------------------------------------------------------
 
 def ediff1d(arr, to_end=None, to_begin=None):
     """
@@ -1798,9 +1800,9 @@ def corrcoef(x, y=None, rowvar=True, bias=np._NoValue, allow_masked=True,
     corr /= ma.multiply.outer(std, std)
     return corr
 
-#####--------------------------------------------------------------------------
-#---- --- Concatenation helpers ---
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# ---- --- Concatenation helpers ---
+# --------------------------------------------------------------------------
 
 class MAxisConcatenator(AxisConcatenator):
     """
@@ -1858,12 +1860,13 @@ class mr_class(MAxisConcatenator):
     def __init__(self):
         MAxisConcatenator.__init__(self, 0)
 
+
 mr_ = mr_class()
 
 
-#####--------------------------------------------------------------------------
-#---- Find unmasked data ---
-#####--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# ---- Find unmasked data ---
+# --------------------------------------------------------------------------
 
 def ndenumerate(a, compressed=True):
     """
@@ -2303,6 +2306,7 @@ def vander(x, n=None):
         _vander[m] = 0
     return _vander
 
+
 vander.__doc__ = ma.doc_note(np.vander.__doc__, vander.__doc__)
 
 
@@ -2339,5 +2343,6 @@ def polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False):
         return np.polyfit(x[not_m], y[not_m], deg, rcond, full, w, cov)
     else:
         return np.polyfit(x, y, deg, rcond, full, w, cov)
+
 
 polyfit.__doc__ = ma.doc_note(np.polyfit.__doc__, polyfit.__doc__)

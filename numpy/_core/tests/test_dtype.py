@@ -21,7 +21,6 @@ import hypothesis
 from hypothesis.extra import numpy as hynp
 
 
-
 def assert_dtype_equal(a, b):
     assert_equal(a, b)
     assert_equal(hash(a), hash(b),
@@ -743,7 +742,7 @@ class TestSubarray:
         assert_raises(ValueError, np.dtype, [('a', 'f4', (-1, -1))])
 
     def test_alignment(self):
-        #Check that subarrays are aligned
+        # Check that subarrays are aligned
         t1 = np.dtype('(1,)i4', align=True)
         t2 = np.dtype('2i4', align=True)
         assert_equal(t1.alignment, t2.alignment)
@@ -772,7 +771,7 @@ class TestSubarray:
         arr = np.ones(3, dtype=[("f", "i", 3)])
         cast = arr.astype(object)
         for fields in cast:
-            assert type(fields) == tuple and len(fields) == 1
+            assert type(fields) is tuple and len(fields) == 1
             subarr = fields[0]
             assert subarr.base is None
             assert subarr.flags.owndata

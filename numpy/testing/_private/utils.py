@@ -1363,7 +1363,8 @@ def rundocs(filename=None, raise_on_error=True):
 
     msg = []
     if raise_on_error:
-        out = lambda s: msg.append(s)
+        def out(s):
+            return msg.append(s)
     else:
         out = None
 
@@ -2040,7 +2041,10 @@ def _gen_alignment_data(dtype=float32, type='binary', max_size=24):
     for o in range(3):
         for s in range(o + 2, max(o + 3, max_size)):
             if type == 'unary':
-                inp = lambda: arange(s, dtype=dtype)[o:]
+
+                def inp():
+                    return arange(s, dtype=dtype)[o:]
+
                 out = empty((s,), dtype=dtype)[o:]
                 yield out, inp(), ufmt % (o, o, s, dtype, 'out of place')
                 d = inp()
@@ -2054,8 +2058,13 @@ def _gen_alignment_data(dtype=float32, type='binary', max_size=24):
                 yield inp()[1:], inp()[:-1], ufmt % \
                     (o + 1, o, s - 1, dtype, 'aliased')
             if type == 'binary':
-                inp1 = lambda: arange(s, dtype=dtype)[o:]
-                inp2 = lambda: arange(s, dtype=dtype)[o:]
+
+                def inp1():
+                    return arange(s, dtype=dtype)[o:]
+
+                def inp2():
+                    return arange(s, dtype=dtype)[o:]
+
                 out = empty((s,), dtype=dtype)[o:]
                 yield out, inp1(), inp2(),  bfmt % \
                     (o, o, o, s, dtype, 'out of place')
@@ -2691,7 +2700,8 @@ def _get_glibc_version():
 
 
 _glibcver = _get_glibc_version()
-_glibc_older_than = lambda x: (_glibcver != '0.0' and _glibcver < x)
+def _glibc_older_than(x):
+    return _glibcver != '0.0' and _glibcver < x
 
 
 def run_threaded(func, iters, pass_count=False):

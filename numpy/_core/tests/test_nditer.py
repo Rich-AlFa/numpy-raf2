@@ -1114,7 +1114,7 @@ def test_iter_object_arrays_conversions():
             x[...] += 1
     assert_equal(a, np.arange(6)+1)
 
-    #Non-contiguous value array
+    # Non-contiguous value array
     a = np.zeros((6,), dtype=[('p', 'i1'), ('a', 'i4')])
     a = a['a']
     a[:] = np.arange(6) + 98172488
@@ -1482,7 +1482,7 @@ def test_iter_copy_casts_structured2():
     # Array of two structured scalars:
     for res in res1, res2:
         # Cast to tuple by getitem, which may be weird and changeable?:
-        assert type(res["a"][0]) == tuple
+        assert type(res["a"][0]) is tuple
         assert res["a"][0] == (1, 1)
 
     for res in res1, res2:
@@ -3135,8 +3135,8 @@ def test_writebacks():
         assert_(x.flags.writebackifcopy)
     assert_equal(au, 6)
     assert_(not x.flags.writebackifcopy)
-    x[:] = 123 # x.data still valid
-    assert_equal(au, 6) # but not connected to au
+    x[:] = 123  # x.data still valid
+    assert_equal(au, 6)  # but not connected to au
 
     it = nditer(au, [],
                  [['readwrite', 'updateifcopy']],
@@ -3196,7 +3196,7 @@ def test_close_equivalent():
 
 def test_close_raises():
     it = np.nditer(np.arange(3))
-    assert_equal (next(it), 0)
+    assert_equal(next(it), 0)
     it.close()
     assert_raises(StopIteration, next, it)
     assert_raises(ValueError, getattr, it, 'operands')

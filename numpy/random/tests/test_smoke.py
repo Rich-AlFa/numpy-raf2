@@ -64,8 +64,8 @@ def comp_state(state1, state2):
     if isinstance(state1, dict):
         for key in state1:
             identical &= comp_state(state1[key], state2[key])
-    elif type(state1) != type(state2):
-        identical &= type(state1) == type(state2)
+    elif type(state1) is not type(state2):
+        identical &= type(state1) is type(state2)
     else:
         if (isinstance(state1, (list, tuple, np.ndarray)) and isinstance(
                 state2, (list, tuple, np.ndarray))):
@@ -434,13 +434,13 @@ class RNG:
     def test_pickle(self):
         pick = pickle.dumps(self.rg)
         unpick = pickle.loads(pick)
-        assert_(type(self.rg) == type(unpick))
+        assert_(type(self.rg) is type(unpick))
         assert_(comp_state(self.rg.bit_generator.state,
                            unpick.bit_generator.state))
 
         pick = pickle.dumps(self.rg)
         unpick = pickle.loads(pick)
-        assert_(type(self.rg) == type(unpick))
+        assert_(type(self.rg) is type(unpick))
         assert_(comp_state(self.rg.bit_generator.state,
                            unpick.bit_generator.state))
 

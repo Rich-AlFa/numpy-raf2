@@ -1327,7 +1327,7 @@ def buildmodule(m, um):
 
     needs = cfuncs.get_needs()
     # Add mapped definitions
-    needs['typedefs'] += [cvar for cvar in capi_maps.f2cmap_mapped #
+    needs['typedefs'] += [cvar for cvar in capi_maps.f2cmap_mapped  #
                           if cvar in typedef_need_dict.values()]
     code = {}
     for n in needs.keys():
@@ -1446,6 +1446,7 @@ def buildmodule(m, um):
             f.write(lines)
         outmess('    Fortran 90 wrappers are saved to "%s"\n' % (wn))
     return ret
+
 
 ################## Build C/API function #############
 

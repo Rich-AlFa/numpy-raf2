@@ -179,22 +179,22 @@ class TestSetOps:
     @pytest.mark.parametrize(
         "ary,prepend,append,expected",
         [
-         (np.array([1, 2, 3], dtype=np.int16),
-          2**16,  # will be cast to int16 under same kind rule.
-          2**16 + 4,
-          np.array([0, 1, 1, 4], dtype=np.int16)),
-         (np.array([1, 2, 3], dtype=np.float32),
-          np.array([5], dtype=np.float64),
-          None,
-          np.array([5, 1, 1], dtype=np.float32)),
-         (np.array([1, 2, 3], dtype=np.int32),
-          0,
-          0,
-          np.array([0, 1, 1, 0], dtype=np.int32)),
-         (np.array([1, 2, 3], dtype=np.int64),
-          3,
-          -9,
-          np.array([3, 1, 1, -9], dtype=np.int64)),
+            (np.array([1, 2, 3], dtype=np.int16),
+             2**16,  # will be cast to int16 under same kind rule.
+             2**16 + 4,
+             np.array([0, 1, 1, 4], dtype=np.int16)),
+            (np.array([1, 2, 3], dtype=np.float32),
+             np.array([5], dtype=np.float64),
+             None,
+             np.array([5, 1, 1], dtype=np.float32)),
+            (np.array([1, 2, 3], dtype=np.int32),
+             0,
+             0,
+             np.array([0, 1, 1, 0], dtype=np.int32)),
+            (np.array([1, 2, 3], dtype=np.int64),
+             3,
+             -9,
+             np.array([3, 1, 1, -9], dtype=np.int64)),
         ]
     )
     def test_ediff1d_scalar_handling(self,

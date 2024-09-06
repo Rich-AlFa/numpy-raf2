@@ -60,10 +60,12 @@ def interesting_binop_operands(val1, val2, dtype):
     arr1[0] = val1
     arr2[0] = val2
 
-    extractor = lambda res: res
+    def extractor(res):
+        return res
     yield arr1[0], arr2[0], extractor, "scalars"
 
-    extractor = lambda res: res
+    def extractor(res):
+        return res
     yield arr1[0, ...], arr2[0, ...], extractor, "scalar-arrays"
 
     # reset array values to fill_value:
@@ -74,7 +76,8 @@ def interesting_binop_operands(val1, val2, dtype):
         arr1[pos] = val1
         arr2[pos] = val2
 
-        extractor = lambda res: res[pos]
+        def extractor(res):
+            return res[pos]
         yield arr1, arr2, extractor, f"off-{pos}"
         yield arr1, arr2[pos], extractor, f"off-{pos}-with-scalar"
 
@@ -87,7 +90,8 @@ def interesting_binop_operands(val1, val2, dtype):
         op1[10] = val1
         op2[10] = val2
 
-        extractor = lambda res: res[10]
+        def extractor(res):
+            return res[10]
         yield op1, op2, extractor, f"stride-{stride}"
 
         op1[10] = fill_value
@@ -204,25 +208,25 @@ class TestOut:
             if subok:
                 assert_(isinstance(r, ArrayWrap))
             else:
-                assert_(type(r) == np.ndarray)
+                assert_(type(r) is np.ndarray)
 
             r = np.add(a, 2, None, subok=subok)
             if subok:
                 assert_(isinstance(r, ArrayWrap))
             else:
-                assert_(type(r) == np.ndarray)
+                assert_(type(r) is np.ndarray)
 
             r = np.add(a, 2, out=None, subok=subok)
             if subok:
                 assert_(isinstance(r, ArrayWrap))
             else:
-                assert_(type(r) == np.ndarray)
+                assert_(type(r) is np.ndarray)
 
             r = np.add(a, 2, out=(None,), subok=subok)
             if subok:
                 assert_(isinstance(r, ArrayWrap))
             else:
-                assert_(type(r) == np.ndarray)
+                assert_(type(r) is np.ndarray)
 
             d = ArrayWrap([5.7])
             o1 = np.empty((1,))
@@ -232,31 +236,31 @@ class TestOut:
             if subok:
                 assert_(isinstance(r2, ArrayWrap))
             else:
-                assert_(type(r2) == np.ndarray)
+                assert_(type(r2) is np.ndarray)
 
             r1, r2 = np.frexp(d, o1, None, subok=subok)
             if subok:
                 assert_(isinstance(r2, ArrayWrap))
             else:
-                assert_(type(r2) == np.ndarray)
+                assert_(type(r2) is np.ndarray)
 
             r1, r2 = np.frexp(d, None, o2, subok=subok)
             if subok:
                 assert_(isinstance(r1, ArrayWrap))
             else:
-                assert_(type(r1) == np.ndarray)
+                assert_(type(r1) is np.ndarray)
 
             r1, r2 = np.frexp(d, out=(o1, None), subok=subok)
             if subok:
                 assert_(isinstance(r2, ArrayWrap))
             else:
-                assert_(type(r2) == np.ndarray)
+                assert_(type(r2) is np.ndarray)
 
             r1, r2 = np.frexp(d, out=(None, o2), subok=subok)
             if subok:
                 assert_(isinstance(r1, ArrayWrap))
             else:
-                assert_(type(r1) == np.ndarray)
+                assert_(type(r1) is np.ndarray)
 
             with assert_raises(TypeError):
                 # Out argument must be tuple, since there are multiple outputs.
@@ -421,8 +425,12 @@ class TestComparisons:
     def test_unsigned_signed_direct_comparison(
             self, dtype, py_comp_func, np_comp_func, flip):
         if flip:
-            py_comp = lambda x, y: py_comp_func(y, x)
-            np_comp = lambda x, y: np_comp_func(y, x)
+
+            def py_comp(x, y):
+                return py_comp_func(y, x)
+
+            def np_comp(x, y):
+                return np_comp_func(y, x)
         else:
             py_comp = py_comp_func
             np_comp = np_comp_func
@@ -499,11 +507,14 @@ class TestDivision:
         a, b, divisors = eval(ex_val)
         a_lst, b_lst = a.tolist(), b.tolist()
 
-        c_div = lambda n, d: (
-            0 if d == 0 else (
-                fo.min if (n and n == fo.min and d == -1) else n//d
-            )
-        )
+        def c_div(n, d):
+            if d == 0:
+                return 0
+            elif n and n == fo.min and d == -1:
+                return fo.min
+            else:
+                return n//d
+
         with np.errstate(divide='ignore'):
             ac = a.copy()
             ac //= b
@@ -562,9 +573,9 @@ class TestDivision:
         fo = np.iinfo(dtype)
         a = eval(ex_val)
         lst = a.tolist()
-        c_div = lambda n, d: (
-            0 if d == 0 or (n and n == fo.min and d == -1) else n//d
-        )
+
+        def c_div(n, d):
+            return 0 if d == 0 or n and n == fo.min and d == -1 else n // d
 
         with np.errstate(divide='ignore'):
             div_a = np.floor_divide.reduce(a)
@@ -693,11 +704,11 @@ class TestDivision:
         with suppress_warnings() as sup:
             sup.filter(RuntimeWarning, "invalid value encountered in floor_divide")
             div = np.floor_divide(fnan, fone)
-            assert(np.isnan(div)), "div: %s" % div
+            assert np.isnan(div), "div: %s" % div
             div = np.floor_divide(fone, fnan)
-            assert(np.isnan(div)), "div: %s" % div
+            assert np.isnan(div), "div: %s" % div
             div = np.floor_divide(fnan, fzer)
-            assert(np.isnan(div)), "div: %s" % div
+            assert np.isnan(div), "div: %s" % div
         # verify 1.0//0.0 computations return inf
         with np.errstate(divide='ignore'):
             z = np.floor_divide(y, x)
@@ -850,26 +861,26 @@ class TestRemainder:
                 sup.filter(RuntimeWarning, "invalid value encountered in divmod")
                 sup.filter(RuntimeWarning, "divide by zero encountered in divmod")
                 div, rem = np.divmod(fone, fzer)
-                assert(np.isinf(div)), 'dt: %s, div: %s' % (dt, rem)
-                assert(np.isnan(rem)), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isinf(div), 'dt: %s, div: %s' % (dt, rem)
+                assert np.isnan(rem), 'dt: %s, rem: %s' % (dt, rem)
                 div, rem = np.divmod(fzer, fzer)
-                assert(np.isnan(rem)), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isnan(rem), 'dt: %s, rem: %s' % (dt, rem)
                 assert_(np.isnan(div)), 'dt: %s, rem: %s' % (dt, rem)
                 div, rem = np.divmod(finf, finf)
-                assert(np.isnan(div)), 'dt: %s, rem: %s' % (dt, rem)
-                assert(np.isnan(rem)), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isnan(div), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isnan(rem), 'dt: %s, rem: %s' % (dt, rem)
                 div, rem = np.divmod(finf, fzer)
-                assert(np.isinf(div)), 'dt: %s, rem: %s' % (dt, rem)
-                assert(np.isnan(rem)), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isinf(div), 'dt: %s, rem: %s' % (dt, rem)
+                assert np.isnan(rem), 'dt: %s, rem: %s' % (dt, rem)
                 div, rem = np.divmod(fnan, fone)
-                assert(np.isnan(rem)), "dt: %s, rem: %s" % (dt, rem)
-                assert(np.isnan(div)), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(rem), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(div), "dt: %s, rem: %s" % (dt, rem)
                 div, rem = np.divmod(fone, fnan)
-                assert(np.isnan(rem)), "dt: %s, rem: %s" % (dt, rem)
-                assert(np.isnan(div)), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(rem), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(div), "dt: %s, rem: %s" % (dt, rem)
                 div, rem = np.divmod(fnan, fzer)
-                assert(np.isnan(rem)), "dt: %s, rem: %s" % (dt, rem)
-                assert(np.isnan(div)), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(rem), "dt: %s, rem: %s" % (dt, rem)
+                assert np.isnan(div), "dt: %s, rem: %s" % (dt, rem)
 
     def test_float_remainder_corner_cases(self):
         # Check remainder magnitude.
@@ -896,8 +907,8 @@ class TestRemainder:
                 rem = np.remainder(fone, fzer)
                 assert_(np.isnan(rem), 'dt: %s, rem: %s' % (dt, rem))
                 # MSVC 2008 returns NaN here, so disable the check.
-                #rem = np.remainder(fone, finf)
-                #assert_(rem == fone, 'dt: %s, rem: %s' % (dt, rem))
+                # rem = np.remainder(fone, finf)
+                # assert_(rem == fone, 'dt: %s, rem: %s' % (dt, rem))
                 rem = np.remainder(finf, fone)
                 fmod = np.fmod(finf, fone)
                 assert_(np.isnan(fmod), 'dt: %s, fmod: %s' % (dt, fmod))
@@ -1136,7 +1147,7 @@ class TestPower:
         one = np.array([1+0j])
         cnan = np.array([complex(np.nan, np.nan)])
         # FIXME cinf not tested.
-        #cinf = np.array([complex(np.inf, 0)])
+        # cinf = np.array([complex(np.inf, 0)])
 
         def assert_complex_equal(x, y):
             x, y = np.asarray(x), np.asarray(y)
@@ -1167,14 +1178,14 @@ class TestPower:
             assert_array_equal(x.real, y.real)
             assert_array_equal(x.imag, y.imag)
 
-        #Complex powers with positive real part will not generate a warning
+        # Complex powers with positive real part will not generate a warning
         assert_complex_equal(np.power(zero, 1+4j), zero)
         assert_complex_equal(np.power(zero, 2-3j), zero)
-        #Testing zero values when real part is greater than zero
+        # Testing zero values when real part is greater than zero
         assert_complex_equal(np.power(zero, 1+1j), zero)
         assert_complex_equal(np.power(zero, 1+0j), zero)
         assert_complex_equal(np.power(zero, 1-1j), zero)
-        #Complex powers will negative real part or 0 (provided imaginary
+        # Complex powers will negative real part or 0 (provided imaginary
         # part is not zero) will generate a NAN and hence a RUNTIME warning
         with pytest.warns(expected_warning=RuntimeWarning) as r:
             assert_complex_equal(np.power(zero, -1+1j), cnan)
@@ -1241,7 +1252,7 @@ class TestPower:
         for dt in [np.float32, np.float64]:
             a = np.array([1, 1, 2, 2, -2, -2, np.inf, -np.inf], dt)
             b = np.array([np.inf, -np.inf, np.inf, -np.inf,
-                                np.inf, -np.inf, np.inf, -np.inf], dt)
+                          np.inf, -np.inf, np.inf, -np.inf], dt)
             r = np.array([1, 1, np.inf, 0, np.inf, 0, np.inf, 0], dt)
             assert_equal(np.power(a, b), r)
 
@@ -2007,6 +2018,7 @@ class TestFRExp:
         assert_equal(exp_true[::stride], exp)
         assert_equal(out_mant[::stride], mant_true[::stride])
         assert_equal(out_exp[::stride], exp_true[::stride])
+
 
 # func : [maxulperror, low, high]
 avx_ufuncs = {'sqrt'        :[1,  0.,   100.],
@@ -2810,8 +2822,8 @@ class TestBitwiseUFuncs:
             num = 2**i - 1
             msg = f"bitwise_count for {num}"
             assert i == np.bitwise_count(input_dtype(num)), msg
-            if np.issubdtype(
-                input_dtype, np.signedinteger) or input_dtype == np.object_:
+            if (np.issubdtype(input_dtype, np.signedinteger)
+                    or input_dtype == np.object_):
                 assert i == np.bitwise_count(input_dtype(-num)), msg
 
         a = np.array([2**i-1 for i in range(1, bitsize)], dtype=input_dtype)
@@ -2935,7 +2947,10 @@ class TestMinMax:
                 for i in range(inp.size):
                     inp[:] = np.arange(inp.size, dtype=dt)
                     inp[i] = np.nan
-                    emsg = lambda: '%r\n%s' % (inp, msg)
+
+                    def emsg():
+                        return '%r\n%s' % (inp, msg)
+
                     with suppress_warnings() as sup:
                         sup.filter(RuntimeWarning,
                                    "invalid value encountered in reduce")
@@ -3678,7 +3693,7 @@ class TestSpecialMethods:
                 for obj in objs:
                     if isinstance(obj, cls):
                         obj = np.array(obj)
-                    elif type(obj) != np.ndarray:
+                    elif type(obj) is not np.ndarray:
                         return NotImplemented
                     result.append(obj)
                 return result
@@ -4139,7 +4154,6 @@ class TestRationalFunctions:
         assert_raises(ValueError, np.gcd, 1, inf)
         assert_raises(ValueError, np.gcd, np.nan, inf)
         assert_raises(TypeError, np.gcd, 4, float(np.inf))
-
 
 
 class TestRoundingFunctions:

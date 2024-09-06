@@ -259,9 +259,9 @@ def english_upper(s):
     return uppered
 
 
-#each entry in defdict is a Ufunc object.
+# each entry in defdict is a Ufunc object.
 
-#name: [string of chars for which it is defined,
+# name: [string of chars for which it is defined,
 #       string of characters using func interface,
 #       tuple of strings giving funcs for data,
 #       (in, out), or (instr, outstr) giving the signature as character codes,
@@ -328,7 +328,7 @@ noint = inexact+O
 nointP = inexact+P
 allP = bints+times+flts+cmplxP
 nobool_or_obj = noobj[1:]
-nobool_or_datetime = noobj[1:-1] + O # includes m - timedelta64
+nobool_or_datetime = noobj[1:-1] + O  # includes m - timedelta64
 intflt = ints+flts
 intfltcmplx = ints+flts+cmplx
 nocmplx = bints+times+flts
@@ -364,7 +364,7 @@ defdict = {
           indexed=intfltcmplx
           ),
 'subtract':
-    Ufunc(2, 1, None, # Zero is only a unit to the right, not the left
+    Ufunc(2, 1, None,  # Zero is only a unit to the right, not the left
           docstrings.get('numpy._core.umath.subtract'),
           'PyUFunc_SubtractionTypeResolver',
           TD(no_bool_times_obj, dispatch=[
@@ -396,9 +396,9 @@ defdict = {
           TD(O, f='PyNumber_Multiply'),
           indexed=intfltcmplx
           ),
-#'true_divide' : aliased to divide in umathmodule.c:initumath
+# 'true_divide' : aliased to divide in umathmodule.c:initumath
 'floor_divide':
-    Ufunc(2, 1, None, # One is only a unit to the right, not the left
+    Ufunc(2, 1, None,  # One is only a unit to the right, not the left
           docstrings.get('numpy._core.umath.floor_divide'),
           'PyUFunc_DivisionTypeResolver',
           TD(ints, cfunc_alias='divide',
@@ -412,7 +412,7 @@ defdict = {
           indexed=flts + ints
           ),
 'divide':
-    Ufunc(2, 1, None, # One is only a unit to the right, not the left
+    Ufunc(2, 1, None,  # One is only a unit to the right, not the left
           docstrings.get('numpy._core.umath.divide'),
           'PyUFunc_TrueDivisionTypeResolver',
           TD(flts+cmplx, cfunc_alias='divide', dispatch=[('loops_arithm_fp', 'fd')]),
@@ -1331,6 +1331,7 @@ def indent(st, spaces):
     indented = re.sub(r' +$', r'', indented)
     return indented
 
+
 # maps [nin, nout][type] to a suffix
 arity_lookup = {
     (1, 1): {
@@ -1360,7 +1361,7 @@ arity_lookup = {
     }
 }
 
-#for each name
+# for each name
 # 1) create functions, data, and signature
 # 2) fill in functions and data in InitOperators
 # 3) add function.
@@ -1425,7 +1426,7 @@ def make_arrays(funcdict):
                                (name, k, t.func_data))
                     code2list.append(astr)
                     datalist.append('(void *)NULL')
-                    #datalist.append('(void *)%s' % t.func_data)
+                    # datalist.append('(void *)%s' % t.func_data)
                 sub += 1
 
             if cfunc_fname:

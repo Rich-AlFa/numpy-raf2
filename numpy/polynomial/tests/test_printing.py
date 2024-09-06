@@ -206,7 +206,7 @@ class TestLinebreaking:
         # Multiline str where len(first_line) + len(next_term) == lw - 1 == 74
         p = poly.Polynomial(
                 [12345678, 12345678, 12345678, 12345678, 1, 12345678]
-            )
+        )
         assert_equal(len(str(p).split('\n')[0]), 74)
         assert_equal(str(p), (
             '12345678.0 + 12345678.0 x + 12345678.0 x**2 + '
@@ -217,7 +217,7 @@ class TestLinebreaking:
         # First line is one character longer than previous test
         p = poly.Polynomial(
                 [12345678, 12345678, 12345678, 12345678.12, 1, 12345678]
-            )
+        )
         assert_equal(str(p), (
             '12345678.0 + 12345678.0 x + 12345678.0 x**2 + '
             '12345678.12 x**3 +\n1.0 x**4 + 12345678.0 x**5'
@@ -479,6 +479,7 @@ class TestLatexRepr:
         coefs = array([Fraction(1, 2), Fraction(1)])
         p = poly.Polynomial(coefs)
         assert_equal(self.as_latex(p), '$x \\mapsto 1/2 + 1\\,x$')
+
 
 SWITCH_TO_EXP = (
     '1.0 + (1.0e-01) x + (1.0e-02) x**2',

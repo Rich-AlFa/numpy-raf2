@@ -27,6 +27,7 @@ def errmess(s: str) -> None:
     if sys.stderr is not None:
         sys.stderr.write(s)
 
+
 ##################### Definitions ##################
 
 outneeds = {'includes0': [], 'includes': [], 'typedefs': [], 'typedefs_generated': [],

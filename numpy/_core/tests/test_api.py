@@ -7,7 +7,7 @@ import pytest
 from numpy.testing import (
      assert_, assert_equal, assert_array_equal, assert_raises, assert_warns,
      HAS_REFCOUNT
-    )
+     )
 
 
 def test_array_array():
@@ -177,7 +177,7 @@ def test_array_astype():
     assert_equal(a.T.strides, b.strides)
     b = a.astype('f4')
     assert_equal(a, b)
-    assert_(not (a is b))
+    assert_(a is not b)
 
     # copy=False parameter skips a copy
     b = a.astype('f4', copy=False)
@@ -187,7 +187,7 @@ def test_array_astype():
     # forcing a copy if the layout is wrong
     b = a.astype('f4', order='F', copy=False)
     assert_equal(a, b)
-    assert_(not (a is b))
+    assert_(a is not b)
     assert_(b.flags.f_contiguous)
 
     b = a.astype('f4', order='C', copy=False)
@@ -223,7 +223,7 @@ def test_array_astype():
     # subok=False never returns a subclass
     b = a.astype('f4', subok=False, copy=False)
     assert_equal(a, b)
-    assert_(not (a is b))
+    assert_(a is not b)
     assert_(type(b) is not MyNDArray)
 
     # Make sure converting from string object to fixed length string
@@ -496,7 +496,7 @@ def test_copy_order():
     c = np.arange(24).reshape(2, 1, 4, 3).swapaxes(2, 3)
 
     def check_copy_result(x, y, ccontig, fcontig, strides=False):
-        assert_(not (x is y))
+        assert_(x is not y)
         assert_equal(x, y)
         assert_equal(res.flags.c_contiguous, ccontig)
         assert_equal(res.flags.f_contiguous, fcontig)

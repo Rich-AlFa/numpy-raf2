@@ -121,6 +121,7 @@ def _get_cancast_table():
 
     return cancast
 
+
 CAST_TABLE = _get_cancast_table()
 
 
@@ -267,8 +268,8 @@ class TestCasting:
                 for to_dt in [to_Dt(), to_Dt().newbyteorder()]:
                     casting, (from_res, to_res), view_off = (
                             cast._resolve_descriptors((from_dt, to_dt)))
-                    assert(type(from_res) == from_Dt)
-                    assert(type(to_res) == to_Dt)
+                    assert type(from_res) is from_Dt
+                    assert type(to_res) is to_Dt
                     if view_off is not None:
                         # If a view is acceptable, this is "no" casting
                         # and byte order must be matching.
@@ -284,8 +285,8 @@ class TestCasting:
                         assert casting == CAST_TABLE[from_Dt][to_Dt]
 
                     if from_Dt is to_Dt:
-                        assert(from_dt is from_res)
-                        assert(to_dt is to_res)
+                        assert from_dt is from_res
+                        assert to_dt is to_res
 
     @pytest.mark.filterwarnings("ignore::numpy.exceptions.ComplexWarning")
     @pytest.mark.parametrize("from_dt", simple_dtype_instances())
@@ -775,7 +776,7 @@ class TestCasting:
             ("V4", "i4", None),
             # completely invalid/impossible cast:
             ("i,i", "i,i,i", None),
-        ])
+    ])
     def test_structured_view_offsets_paramteric(
             self, from_dt, to_dt, expected_off):
         # TODO: While this test is fairly thorough, right now, it does not
